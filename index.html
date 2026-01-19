@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio - Full Stack | Data Science | Data Engineering</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <h2>Joe Gruenbaum</h2>
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="#home" class="nav-link">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#fullstack" class="nav-link">Full Stack</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#datascience" class="nav-link">Data Science</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#dataengineering" class="nav-link">Data Engineering</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#contact" class="nav-link">Contact</a>
+                </li>
+            </ul>
+            <div class="nav-toggle" id="mobile-menu">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-container">
+            <div class="hero-content">
+                <h1 class="hero-title">Joseph Gruenbaum</h1>
+                <p class="hero-subtitle">Building scalable applications and data-driven solutions</p>
+                <div class="hero-buttons">
+                    <a href="#fullstack" class="btn btn-primary">View Full Stack Work</a>
+                    <a href="#datascience" class="btn btn-secondary">View Data Science Work</a>
+                </div>
+            </div>
+            <div class="hero-image">
+                <div class="hero-card">
+                    <div class="card-face card-front">
+                        <i class="fas fa-code"></i>
+                        <h3>Full Stack</h3>
+                    </div>
+                    <div class="card-face card-back">
+                        <i class="fas fa-database"></i>
+                        <h3>Data Engineering</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Full Stack Section -->
+    <section id="fullstack" class="portfolio-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Full Stack Development</h2>
+                <p>End-to-end web applications with modern technologies</p>
+            </div>
+            <div class="portfolio-grid" id="fullstack-grid">
+                <!-- Projects will be dynamically loaded here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Data Science Section -->
+    <section id="datascience" class="portfolio-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Data Science</h2>
+                <p>Machine learning, analytics, and data visualization</p>
+            </div>
+            <div class="portfolio-grid" id="datascience-grid">
+                <!-- Projects will be dynamically loaded here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Data Engineering Section -->
+    <section id="dataengineering" class="portfolio-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Data Engineering</h2>
+                <p>Pipelines, ETL, and big data infrastructure</p>
+            </div>
+            <div class="portfolio-grid" id="dataengineering-grid">
+                <!-- Projects will be dynamically loaded here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
+        <div class="container">
+            <div class="section-header">
+                <h2>Get In Touch</h2>
+                <p>Let's discuss your next project</p>
+            </div>
+            <div class="contact-content">
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <div>
+                            <h4>Email</h4>
+                            <p>your.email@example.com</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fab fa-github"></i>
+                        <div>
+                            <h4>GitHub</h4>
+                            <p>github.com/yourusername</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fab fa-linkedin"></i>
+                        <div>
+                            <h4>LinkedIn</h4>
+                            <p>linkedin.com/in/yourprofile</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="contact-form">
+                    <form id="contact-form">
+                        <div class="form-group">
+                            <input type="text" id="name" name="name" placeholder="Your Name" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" id="email" name="email" placeholder="Your Email" required>
+                        </div>
+                        <div class="form-group">
+                            <textarea id="message" name="message" placeholder="Your Message" rows="5" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Send Message</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 Portfolio. Built with HTML, CSS & JavaScript.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
