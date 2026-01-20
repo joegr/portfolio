@@ -8,7 +8,8 @@ const portfolioData = {
             image: "https://opengraph.githubassets.com/1/joegr/turny",
             technologies: ["Flask", "Redis", "Docker", "JavaScript", "REST API"],
             github: "https://github.com/joegr/turny",
-            demo: "https://github.com/joegr/turny"
+            demo: "https://github.com/joegr/turny",
+            detailPage: "projects/turny.html"
         },
         {
             id: 2,
@@ -17,7 +18,8 @@ const portfolioData = {
             image: "https://opengraph.githubassets.com/1/joegr/fold",
             technologies: ["React", "Flask", "3D Visualization", "Cryptography", "Python"],
             github: "https://github.com/joegr/fold",
-            demo: "https://github.com/joegr/fold"
+            demo: "https://github.com/joegr/fold",
+            detailPage: "projects/fold.html"
         },
         {
             id: 3,
@@ -26,7 +28,8 @@ const portfolioData = {
             image: "https://opengraph.githubassets.com/1/joegr/owl",
             technologies: ["Django", "JavaScript", "REST API", "BDD", "Gherkin", "SMTP"],
             github: "https://github.com/joegr/owl",
-            demo: "https://github.com/joegr/owl"
+            demo: "https://github.com/joegr/owl",
+            detailPage: "projects/owl.html"
         }
     ],
     datascience: [
@@ -37,7 +40,8 @@ const portfolioData = {
             image: "https://opengraph.githubassets.com/1/joegr/elo-garden",
             technologies: ["Python", "PyTorch", "Transformers", "BPE Tokenizer", "TensorBoard", "CUDA"],
             github: "https://github.com/joegr/elo-garden/tree/main/services",
-            demo: "https://github.com/joegr/elo-garden"
+            demo: "https://github.com/joegr/elo-garden",
+            detailPage: "projects/elo-garden.html"
         },
         {
             id: 2,
@@ -46,7 +50,8 @@ const portfolioData = {
             image: "https://opengraph.githubassets.com/1/joegr/ipaba",
             technologies: ["Python", "Plotly", "NetworkX", "IPA", "Linguistics", "Data Visualization"],
             github: "https://github.com/joegr/ipaba",
-            demo: "https://github.com/joegr/ipaba"
+            demo: "https://github.com/joegr/ipaba",
+            detailPage: "projects/phonemescape.html"
         },
         {
             id: 3,
@@ -55,7 +60,8 @@ const portfolioData = {
             image: "https://opengraph.githubassets.com/1/joegr/native-sparse-attention",
             technologies: ["CUDA", "C++", "CMake", "Attention Mechanisms", "GPU Optimization"],
             github: "https://github.com/joegr/native-sparse-attention",
-            demo: "https://github.com/joegr/native-sparse-attention"
+            demo: "https://github.com/joegr/native-sparse-attention",
+            detailPage: "projects/native-sparse-attention.html"
         },
         {
             id: 4,
@@ -64,7 +70,8 @@ const portfolioData = {
             image: "https://opengraph.githubassets.com/1/joegr/docproc",
             technologies: ["Python", "Flask", "LangChain", "GPT-3.5", "MongoDB", "OpenAI"],
             github: "https://github.com/joegr/docproc",
-            demo: "https://github.com/joegr/docproc"
+            demo: "https://github.com/joegr/docproc",
+            detailPage: "projects/docproc.html"
         }
     ],
     dataengineering: [
@@ -75,7 +82,8 @@ const portfolioData = {
             image: "https://via.placeholder.com/400x200/667eea/ffffff?text=Data+Pipelines",
             technologies: ["Databricks", "Azure Data Factory", "AWS Lambda", "Azure Functions", "PySpark", "ETL"],
             github: "https://github.com/joegr",
-            demo: "https://github.com/joegr"
+            demo: "https://github.com/joegr",
+            detailPage: "projects/cloud-data-pipelines.html"
         },
         {
             id: 2,
@@ -84,7 +92,34 @@ const portfolioData = {
             image: "https://opengraph.githubassets.com/1/joegr/37724d7a3c6bf1ad8d1ae5fff67ff7ee",
             technologies: ["Python", "Cryptography", "Security", "Algorithms"],
             github: "https://gist.github.com/joegr/37724d7a3c6bf1ad8d1ae5fff67ff7ee",
-            demo: "https://gist.github.com/joegr/37724d7a3c6bf1ad8d1ae5fff67ff7ee"
+            demo: "https://gist.github.com/joegr/37724d7a3c6bf1ad8d1ae5fff67ff7ee",
+            detailPage: "projects/vigenere-cipher.html"
+        }
+    ],
+    writings: [
+        {
+            id: 1,
+            title: "Alignment Means You Already Messed Up: Ethics in ML",
+            excerpt: "And some of our conscious heuristics and unconscious associations are rooted in faculties that have emerged from evolution. For example, as infants grow they begin to build a model of the world informed by these emergent faculties. Pure sense data, differences in light reflections of shaped objects, the arrangement of features like eyes and mouths become: faces of mom, dad, siblings. Before we recognize, our meta-mammal faculty computes: is this a related species? We intuit faces—seeing them where they are not, fashioning our designs of cars and household objects appropriating the recognizable, right-side-up structure of a face. Likewise, objects that grow rapidly in the field of vision, babies react to with fear, without any association to the object itself.",
+            date: "",
+            url: "https://www.linkedin.com/pulse/alignment-means-you-already-messed-up-ethics-ml-joseph-gruenbaum-fosdc/",
+            tags: ["AI Ethics", "Machine Learning", "Alignment"]
+        },
+        {
+            id: 2,
+            title: "10 Turing Benchmarks",
+            excerpt: "Many orders of magnitude by computational possibility more complex than Chess is Go—but machines are way better than us at this too, both the open source engines and especially reinforcement learning through self-play have resulted in skewed losses that embarrass shaking human hands. We thought this wouldn't fall after Chess; but the optimization core was there. All it took was changing some input parameters and adapting the problem space - see the paper above for details.",
+            date: "",
+            url: "https://www.linkedin.com/pulse/10-turing-benchmarks-joseph-gruenbaum/",
+            tags: ["AI", "Turing Test", "Benchmarks"]
+        },
+        {
+            id: 3,
+            title: "The Responsibility to Pretend in AI",
+            excerpt: "Classical realists love to imbue anarchy with fatalism, and domestic political squabbles with prescribed apathy. New realists eliminate this fortune-based setup, positing anarchy as a zero-sum vacuum without the proclivities of hubris. This critique is anti-Kantian, and counter to the way many have conceived of international organization post-Fukuyama, but this critique does not explain or predict well the behavior of states in the TikTok era. As states become better at triggering the snap-reactions of the media, manufacturing information and discourse, democracies themselves stand to lose whatever theoretical footing IR theories build for justification, be them institutionalist or normative or both. Why? How would Carr evaluate state behavior and domestic political influence on IR today, in the wild world we live in?",
+            date: "",
+            url: "https://www.linkedin.com/pulse/responsibility-pretend-ir-ai-joseph-gruenbaum-82pyc/",
+            tags: ["AI", "Philosophy", "Responsibility"]
         }
     ]
 };
@@ -146,13 +181,43 @@ function renderPortfolioProjects() {
     if (dataengineeringGrid) {
         dataengineeringGrid.innerHTML = portfolioData.dataengineering.map(project => createProjectCard(project)).join('');
     }
+
+    // Render Writings
+    const writingsGrid = document.getElementById('writings-grid');
+    if (writingsGrid) {
+        const validWritings = portfolioData.writings.filter(w => w.title);
+        writingsGrid.innerHTML = validWritings.map(article => createArticleCard(article)).join('');
+    }
+}
+
+// Create Article Card HTML
+function createArticleCard(article) {
+    const tagsHTML = article.tags.length > 0 
+        ? article.tags.map(tag => `<span class="article-tag">${tag}</span>`).join('') 
+        : '';
+    return `
+        <article class="article-card reveal">
+            <div class="article-content">
+                <div class="article-date">${article.date}</div>
+                <h3 class="article-title">${article.title}</h3>
+                <p class="article-excerpt">${article.excerpt}</p>
+                <div class="article-tags">${tagsHTML}</div>
+                <a href="${article.url}" target="_blank" class="article-link">
+                    <i class="fab fa-linkedin"></i> Read on LinkedIn
+                </a>
+            </div>
+        </article>
+    `;
 }
 
 // Create Project Card HTML
 function createProjectCard(project) {
+    const detailLink = project.detailPage ? `<a href="${project.detailPage}" class="portfolio-link detail-link"><i class="fas fa-info-circle"></i> Details</a>` : '';
     return `
         <div class="portfolio-card reveal">
-            <img src="${project.image}" alt="${project.title}" class="portfolio-image">
+            <a href="${project.detailPage || project.github}" class="portfolio-image-link">
+                <img src="${project.image}" alt="${project.title}" class="portfolio-image">
+            </a>
             <div class="portfolio-content">
                 <h3 class="portfolio-title">${project.title}</h3>
                 <p class="portfolio-description">${project.description}</p>
@@ -163,9 +228,7 @@ function createProjectCard(project) {
                     <a href="${project.github}" target="_blank" class="portfolio-link">
                         <i class="fab fa-github"></i> Code
                     </a>
-                    <a href="${project.demo}" target="_blank" class="portfolio-link">
-                        <i class="fas fa-external-link-alt"></i> Demo
-                    </a>
+                    ${detailLink}
                 </div>
             </div>
         </div>
@@ -312,6 +375,3 @@ document.addEventListener('mouseout', (e) => {
         card.style.transform = 'translateY(0) scale(1)';
     }
 });
-
-// Console welcome message
-console.log("Le neant est la vérité !");
