@@ -3,88 +3,88 @@ const portfolioData = {
     fullstack: [
         {
             id: 1,
-            title: "E-Commerce Platform",
-            description: "Full-stack e-commerce solution with React, Node.js, and MongoDB. Features include user authentication, payment processing, and admin dashboard.",
-            image: "https://via.placeholder.com/400x200/667eea/ffffff?text=E-Commerce",
-            technologies: ["React", "Node.js", "MongoDB", "Stripe", "JWT"],
-            github: "https://github.com/yourusername/ecommerce-platform",
-            demo: "https://ecommerce-demo.com"
+            title: "Turny - Tournament Manager",
+            description: "Cryptographically secure tournament application with team registration, automated round progression, and real-time updates. Features abandoned match handling and Redis persistence with Docker deployment.",
+            image: "https://opengraph.githubassets.com/1/joegr/turny",
+            technologies: ["Flask", "Redis", "Docker", "JavaScript", "REST API"],
+            github: "https://github.com/joegr/turny",
+            demo: "https://github.com/joegr/turny"
         },
         {
             id: 2,
-            title: "Task Management App",
-            description: "Collaborative task management application with real-time updates, drag-and-drop functionality, and team collaboration features.",
-            image: "https://via.placeholder.com/400x200/764ba2/ffffff?text=Task+Manager",
-            technologies: ["Vue.js", "Express", "PostgreSQL", "Socket.io"],
-            github: "https://github.com/yourusername/task-manager",
-            demo: "https://task-manager-demo.com"
+            title: "Fold - Circuit Card Encryption Generator",
+            description: "Interactive circuit card simulator with 3D visualization and encryption algorithm generation. Create custom logic elements, stack circuit layers, and export real Python encryption code based on circuit design.",
+            image: "https://opengraph.githubassets.com/1/joegr/fold",
+            technologies: ["React", "Flask", "3D Visualization", "Cryptography", "Python"],
+            github: "https://github.com/joegr/fold",
+            demo: "https://github.com/joegr/fold"
         },
         {
             id: 3,
-            title: "Social Media Dashboard",
-            description: "Analytics dashboard for social media management with data visualization, scheduling, and multi-platform integration.",
-            image: "https://via.placeholder.com/400x200/f093fb/ffffff?text=Analytics",
-            technologies: ["Angular", "Python", "Redis", "D3.js"],
-            github: "https://github.com/yourusername/social-dashboard",
-            demo: "https://social-dashboard-demo.com"
+            title: "Owl - Email CRM",
+            description: "Email-based CRM system with contact management, template creation, bulk email sending, and analytics dashboard. Built with Django backend and BDD testing using Gherkin/Cucumber specifications.",
+            image: "https://opengraph.githubassets.com/1/joegr/owl",
+            technologies: ["Django", "JavaScript", "REST API", "BDD", "Gherkin", "SMTP"],
+            github: "https://github.com/joegr/owl",
+            demo: "https://github.com/joegr/owl"
         }
     ],
     datascience: [
         {
             id: 1,
-            title: "Customer Churn Prediction",
-            description: "Machine learning model to predict customer churn with 85% accuracy. Includes data preprocessing, feature engineering, and model deployment.",
-            image: "https://via.placeholder.com/400x200/667eea/ffffff?text=Churn+Prediction",
-            technologies: ["Python", "Scikit-learn", "Pandas", "Flask", "Docker"],
-            github: "https://github.com/yourusername/churn-prediction",
-            demo: "https://churn-prediction-demo.com"
+            title: "Elo Garden - LLM from Scratch",
+            description: "Complete LLM training infrastructure with custom Transformer architecture, BPE tokenizer, and full training pipeline. Features TensorBoard monitoring, checkpointing, and configurable text generation with temperature/top-k/top-p sampling.",
+            image: "https://opengraph.githubassets.com/1/joegr/elo-garden",
+            technologies: ["Python", "PyTorch", "Transformers", "BPE Tokenizer", "TensorBoard", "CUDA"],
+            github: "https://github.com/joegr/elo-garden/tree/main/services",
+            demo: "https://github.com/joegr/elo-garden"
         },
         {
             id: 2,
-            title: "Sentiment Analysis Tool",
-            description: "Real-time sentiment analysis for social media data using NLP techniques and deep learning models.",
-            image: "https://via.placeholder.com/400x200/764ba2/ffffff?text=Sentiment+Analysis",
-            technologies: ["Python", "NLTK", "TensorFlow", "React", "FastAPI"],
-            github: "https://github.com/yourusername/sentiment-analysis",
-            demo: "https://sentiment-analysis-demo.com"
+            title: "Phonemescape - IPA Analysis Library",
+            description: "Comprehensive phoneme analysis library with IPA vowel/consonant visualization, mouth shape similarity calculation, and network graph generation. Features articulatory feature analysis and word phoneme breakdown.",
+            image: "https://opengraph.githubassets.com/1/joegr/ipaba",
+            technologies: ["Python", "Plotly", "NetworkX", "IPA", "Linguistics", "Data Visualization"],
+            github: "https://github.com/joegr/ipaba",
+            demo: "https://github.com/joegr/ipaba"
         },
         {
             id: 3,
-            title: "Sales Forecasting System",
-            description: "Time series forecasting system for sales prediction using ARIMA, LSTM, and ensemble methods.",
-            image: "https://via.placeholder.com/400x200/f093fb/ffffff?text=Sales+Forecast",
-            technologies: ["Python", "Prophet", "LSTM", "Plotly", "Streamlit"],
-            github: "https://github.com/yourusername/sales-forecasting",
-            demo: "https://sales-forecasting-demo.com"
+            title: "Native Sparse Attention (NSA)",
+            description: "CUDA implementation of sparse attention with three-branch architecture: compressed token, selected token, and sliding window branches. Optimized kernels with shared memory utilization.",
+            image: "https://opengraph.githubassets.com/1/joegr/native-sparse-attention",
+            technologies: ["CUDA", "C++", "CMake", "Attention Mechanisms", "GPU Optimization"],
+            github: "https://github.com/joegr/native-sparse-attention",
+            demo: "https://github.com/joegr/native-sparse-attention"
+        },
+        {
+            id: 4,
+            title: "DocProc - AI Document Processor",
+            description: "Conversational AI web application for extracting and processing information from call logs using GPT-3.5 and LangChain. Features time navigation and automatic fact processing.",
+            image: "https://opengraph.githubassets.com/1/joegr/docproc",
+            technologies: ["Python", "Flask", "LangChain", "GPT-3.5", "MongoDB", "OpenAI"],
+            github: "https://github.com/joegr/docproc",
+            demo: "https://github.com/joegr/docproc"
         }
     ],
     dataengineering: [
         {
             id: 1,
-            title: "Real-time Data Pipeline",
-            description: "Apache Kafka-based real-time data pipeline for processing streaming data with Spark and Elasticsearch.",
-            image: "https://via.placeholder.com/400x200/667eea/ffffff?text=Data+Pipeline",
-            technologies: ["Apache Kafka", "Spark", "Elasticsearch", "Docker", "Kubernetes"],
-            github: "https://github.com/yourusername/realtime-pipeline",
-            demo: "https://pipeline-demo.com"
+            title: "Cloud Data Pipelines",
+            description: "Collection of production-ready data pipeline examples featuring Databricks notebooks, Azure Data Factory workflows, and AWS Lambda/Azure Functions for serverless ETL. Includes best practices for orchestration and monitoring.",
+            image: "https://via.placeholder.com/400x200/667eea/ffffff?text=Data+Pipelines",
+            technologies: ["Databricks", "Azure Data Factory", "AWS Lambda", "Azure Functions", "PySpark", "ETL"],
+            github: "https://github.com/joegr",
+            demo: "https://github.com/joegr"
         },
         {
             id: 2,
-            title: "ETL Automation Framework",
-            description: "Scalable ETL framework for data warehouse automation with Airflow and dbt for data transformation.",
-            image: "https://via.placeholder.com/400x200/764ba2/ffffff?text=ETL+Framework",
-            technologies: ["Airflow", "dbt", "Snowflake", "Python", "Docker"],
-            github: "https://github.com/yourusername/etl-framework",
-            demo: "https://etl-framework-demo.com"
-        },
-        {
-            id: 3,
-            title: "Data Lake Architecture",
-            description: "Enterprise data lake solution with AWS S3, Glue, and Athena for big data analytics and reporting.",
-            image: "https://via.placeholder.com/400x200/f093fb/ffffff?text=Data+Lake",
-            technologies: ["AWS S3", "Glue", "Athena", "Lambda", "Terraform"],
-            github: "https://github.com/yourusername/data-lake",
-            demo: "https://data-lake-demo.com"
+            title: "Vigenère Cipher",
+            description: "Cryptographic cipher implementation with random key generation from printable character sets. Demonstrates classical encryption algorithms with modern Python practices.",
+            image: "https://opengraph.githubassets.com/1/joegr/37724d7a3c6bf1ad8d1ae5fff67ff7ee",
+            technologies: ["Python", "Cryptography", "Security", "Algorithms"],
+            github: "https://gist.github.com/joegr/37724d7a3c6bf1ad8d1ae5fff67ff7ee",
+            demo: "https://gist.github.com/joegr/37724d7a3c6bf1ad8d1ae5fff67ff7ee"
         }
     ]
 };
@@ -314,5 +314,4 @@ document.addEventListener('mouseout', (e) => {
 });
 
 // Console welcome message
-console.log('%c🚀 Welcome to my portfolio!', 'font-size: 20px; color: #667eea; font-weight: bold;');
-console.log('%cFeel free to explore my projects and get in touch!', 'font-size: 14px; color: #764ba2;');
+console.log("Le neant est la vérité !");
