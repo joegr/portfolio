@@ -79,7 +79,7 @@ const portfolioData = {
             id: 1,
             title: "Cloud Data Pipelines",
             description: "Collection of production-ready data pipeline examples featuring Databricks notebooks, Azure Data Factory workflows, and AWS Lambda/Azure Functions for serverless ETL. Includes best practices for orchestration and monitoring.",
-            image: "https://via.placeholder.com/400x200/667eea/ffffff?text=Data+Pipelines",
+            image: "https://opengraph.githubassets.com/1/joegr/cloud-data-pipelines",
             technologies: ["Databricks", "Azure Data Factory", "AWS Lambda", "Azure Functions", "PySpark", "ETL"],
             github: "https://github.com/joegr",
             demo: "https://github.com/joegr",
