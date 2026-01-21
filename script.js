@@ -6,7 +6,7 @@ const portfolioData = {
             title: "Turny - Tournament Manager",
             description: "Cryptographically secure tournament application with team registration, automated round progression, and real-time updates. Features abandoned match handling and Redis persistence with Docker deployment.",
             image: "https://opengraph.githubassets.com/1/joegr/turny",
-            technologies: ["Flask", "Redis", "Docker", "JavaScript", "REST API"],
+            technologies: ["Flask", "Redis", "Docker", "JavaScript", "HTML", "Gherkin/BDD"],
             github: "https://github.com/joegr/turny",
             demo: "https://github.com/joegr/turny",
             detailPage: "projects/turny.html"
@@ -16,7 +16,7 @@ const portfolioData = {
             title: "Fold - Circuit Card Encryption Generator",
             description: "Interactive circuit card simulator with 3D visualization and encryption algorithm generation. Create custom logic elements, stack circuit layers, and export real Python encryption code based on circuit design.",
             image: "https://opengraph.githubassets.com/1/joegr/fold",
-            technologies: ["React", "Flask", "3D Visualization", "Cryptography", "Python"],
+            technologies: ["React", "Flask", "Three.js", "TypeScript", "Python", "AES"],
             github: "https://github.com/joegr/fold",
             demo: "https://github.com/joegr/fold",
             detailPage: "projects/fold.html"
@@ -26,7 +26,7 @@ const portfolioData = {
             title: "Owl - Email CRM",
             description: "Email-based CRM system with contact management, template creation, bulk email sending, and analytics dashboard. Built with Django backend and BDD testing using Gherkin/Cucumber specifications.",
             image: "https://opengraph.githubassets.com/1/joegr/owl",
-            technologies: ["Django", "JavaScript", "REST API", "BDD", "Gherkin", "SMTP"],
+            technologies: ["Python", "Django", "JavaScript", "HTML", "Gherkin/BDD", "SMTP"],
             github: "https://github.com/joegr/owl",
             demo: "https://github.com/joegr/owl",
             detailPage: "projects/owl.html"
@@ -38,7 +38,7 @@ const portfolioData = {
             title: "Elo Garden - LLM from Scratch",
             description: "Complete LLM training infrastructure with custom Transformer architecture, BPE tokenizer, and full training pipeline. Features TensorBoard monitoring, checkpointing, and configurable text generation with temperature/top-k/top-p sampling.",
             image: "https://opengraph.githubassets.com/1/joegr/elo-garden",
-            technologies: ["Python", "PyTorch", "Transformers", "BPE Tokenizer", "TensorBoard", "CUDA"],
+            technologies: ["Python", "PyTorch", "Transformers", "BPE Tokenizer", "TensorBoard", "AdamW"],
             github: "https://github.com/joegr/elo-garden/tree/main/services",
             demo: "https://github.com/joegr/elo-garden",
             detailPage: "projects/elo-garden.html"
@@ -48,7 +48,7 @@ const portfolioData = {
             title: "Phonemescape - IPA Analysis Library",
             description: "Comprehensive phoneme analysis library with IPA vowel/consonant visualization, mouth shape similarity calculation, and network graph generation. Features articulatory feature analysis and word phoneme breakdown.",
             image: "https://opengraph.githubassets.com/1/joegr/ipaba",
-            technologies: ["Python", "Plotly", "NetworkX", "IPA", "Linguistics", "Data Visualization"],
+            technologies: ["Python", "Plotly", "NetworkX", "IPA", "Linguistics", "pip package"],
             github: "https://github.com/joegr/ipaba",
             demo: "https://github.com/joegr/ipaba",
             detailPage: "projects/phonemescape.html"
@@ -58,7 +58,7 @@ const portfolioData = {
             title: "Native Sparse Attention (NSA)",
             description: "CUDA implementation of sparse attention with three-branch architecture: compressed token, selected token, and sliding window branches. Optimized kernels with shared memory utilization.",
             image: "https://opengraph.githubassets.com/1/joegr/native-sparse-attention",
-            technologies: ["CUDA", "C++", "CMake", "Attention Mechanisms", "GPU Optimization"],
+            technologies: ["CUDA", "C", "CMake", "Sparse Attention", "GPU Kernels"],
             github: "https://github.com/joegr/native-sparse-attention",
             demo: "https://github.com/joegr/native-sparse-attention",
             detailPage: "projects/native-sparse-attention.html"
@@ -68,7 +68,7 @@ const portfolioData = {
             title: "DocProc - AI Document Processor",
             description: "Conversational AI web application for extracting and processing information from call logs using GPT-3.5 and LangChain. Features time navigation and automatic fact processing.",
             image: "https://opengraph.githubassets.com/1/joegr/docproc",
-            technologies: ["Python", "Flask", "LangChain", "GPT-3.5", "MongoDB", "OpenAI"],
+            technologies: ["Python", "Flask", "OpenAI GPT-3.5", "PyMongo", "MongoDB", "JavaScript"],
             github: "https://github.com/joegr/docproc",
             demo: "https://github.com/joegr/docproc",
             detailPage: "projects/docproc.html"
@@ -77,20 +77,20 @@ const portfolioData = {
     dataengineering: [
         {
             id: 1,
-            title: "Cloud Data Pipelines",
-            description: "Collection of production-ready data pipeline examples featuring Databricks notebooks, Azure Data Factory workflows, and AWS Lambda/Azure Functions for serverless ETL. Includes best practices for orchestration and monitoring.",
-            image: "https://opengraph.githubassets.com/1/joegr/cloud-data-pipelines",
-            technologies: ["Databricks", "Azure Data Factory", "AWS Lambda", "Azure Functions", "PySpark", "ETL"],
-            github: "https://github.com/joegr",
-            demo: "https://github.com/joegr",
-            detailPage: "projects/cloud-data-pipelines.html"
+            title: "Tower Scraper",
+            description: "Python web scraper for extracting and processing tower/infrastructure data. Clean, efficient scraping with modern Python practices.",
+            image: "https://opengraph.githubassets.com/1/joegr/63bf28b0fdc9d6823063753e4aee2386",
+            technologies: ["Python", "Web Scraping", "BeautifulSoup", "Requests"],
+            github: "https://gist.github.com/joegr/63bf28b0fdc9d6823063753e4aee2386",
+            demo: "https://gist.github.com/joegr/63bf28b0fdc9d6823063753e4aee2386",
+            detailPage: "projects/tower-scraper.html"
         },
         {
             id: 2,
             title: "Vigenère Cipher",
             description: "Cryptographic cipher implementation with random key generation from printable character sets. Demonstrates classical encryption algorithms with modern Python practices.",
             image: "https://opengraph.githubassets.com/1/joegr/37724d7a3c6bf1ad8d1ae5fff67ff7ee",
-            technologies: ["Python", "Cryptography", "Security", "Algorithms"],
+            technologies: ["Python", "Cryptography", "Classical Ciphers"],
             github: "https://gist.github.com/joegr/37724d7a3c6bf1ad8d1ae5fff67ff7ee",
             demo: "https://gist.github.com/joegr/37724d7a3c6bf1ad8d1ae5fff67ff7ee",
             detailPage: "projects/vigenere-cipher.html"
