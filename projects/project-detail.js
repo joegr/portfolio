@@ -113,24 +113,6 @@ const projectDetails = {
         ],
         technicalDetails: "Three-branch attention architecture with configurable block length/stride for compression, selection block size/count, sliding window size, and head dimensions. Requires CUDA Toolkit 11.0+, CMake 3.18+, and C/C++ compiler with C11/C++14 support. Languages: 52.7% CUDA, 43.2% C, 4.1% CMake."
     },
-    docproc: {
-        title: "DocProc - AI Document Processor",
-        category: "datascience",
-        categoryLabel: "Data Science",
-        backLink: "../index.html#datascience",
-        github: "https://github.com/joegr/docproc",
-        technologies: ["Python", "Flask", "OpenAI GPT-3.5", "PyMongo", "MongoDB", "JavaScript", "HTML", "REST API"],
-        screenshots: [],
-        overview: "Conversational AI web application for extracting and processing information from call logs. Uses GPT-3.5 for document processing with time navigation and automatic fact extraction.",
-        features: [
-            "Question and Answer Screen: Displays questions and extracted answers with time navigation",
-            "Document Addition Screen: Add new call logs and set questions for processing",
-            "Automatic Fact Processing: Extracts relevant facts and handles contradictions",
-            "REST API Endpoints: Submit questions/documents and retrieve processed facts",
-            "Temporal Data Consistency: Prioritizes accuracy in time-based information"
-        ],
-        technicalDetails: "Built with Flask (Python web framework) and PyMongo for MongoDB interaction. Uses OpenAI GPT-3.5 for intelligent document processing. API endpoints: POST /submit_question_and_documents, GET /get_question_and_facts. Languages: 52.8% HTML, 31.4% Python, 15.8% JavaScript."
-    },
     "tower-scraper": {
         title: "Tower Scraper",
         category: "dataengineering",

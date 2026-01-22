@@ -62,16 +62,6 @@ const portfolioData = {
             github: "https://github.com/joegr/native-sparse-attention",
             demo: "https://github.com/joegr/native-sparse-attention",
             detailPage: "projects/native-sparse-attention.html"
-        },
-        {
-            id: 4,
-            title: "DocProc - AI Document Processor",
-            description: "Conversational AI web application for extracting and processing information from call logs using GPT-3.5 and LangChain. Features time navigation and automatic fact processing.",
-            image: "https://opengraph.githubassets.com/1/joegr/docproc",
-            technologies: ["Python", "Flask", "OpenAI GPT-3.5", "PyMongo", "MongoDB", "JavaScript"],
-            github: "https://github.com/joegr/docproc",
-            demo: "https://github.com/joegr/docproc",
-            detailPage: "projects/docproc.html"
         }
     ],
     dataengineering: [
