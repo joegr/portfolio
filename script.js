@@ -243,7 +243,9 @@ function createProjectCard(project) {
     return `
         <div class="portfolio-card reveal">
             <a href="${sanitizeURL(project.detailPage || project.github)}" class="portfolio-image-link">
-                <img src="${sanitizeURL(project.image)}" alt="${sanitizeHTML(project.title)}" class="portfolio-image">
+                <div class="portfolio-image-placeholder">
+                    <span class="placeholder-title">${sanitizeHTML(project.title)}</span>
+                </div>
             </a>
             <div class="portfolio-content">
                 <h3 class="portfolio-title">${sanitizeHTML(project.title)}</h3>
