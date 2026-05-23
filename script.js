@@ -6,13 +6,20 @@ function sanitizeHTML(str) {
 }
 
 function sanitizeURL(url) {
-    try {
-        const parsed = new URL(url, window.location.origin);
-        if (['http:', 'https:'].includes(parsed.protocol)) {
-            return parsed.href;
-        }
-    } catch (e) {}
-    return '#';
+    if (!url) return '#';
+    if (url.startsWith('http://') || url.startsWith('https://')) {
+        try {
+            const parsed = new URL(url);
+            if (['http:', 'https:'].includes(parsed.protocol)) {
+                return parsed.href;
+            }
+        } catch (e) {}
+        return '#';
+    }
+    if (url.startsWith('javascript:') || url.startsWith('data:')) {
+        return '#';
+    }
+    return url;
 }
 
 // Portfolio Data
