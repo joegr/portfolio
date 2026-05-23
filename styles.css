@@ -437,6 +437,24 @@ body {
     margin: 0 auto;
 }
 
+.contact-centered {
+    grid-template-columns: 1fr;
+    gap: 0;
+    justify-items: center;
+    text-align: center;
+}
+
+.contact-centered .contact-info {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 2rem;
+}
+
+.contact-centered .contact-item {
+    margin-bottom: 0;
+}
+
 .contact-item {
     display: flex;
     align-items: center;
