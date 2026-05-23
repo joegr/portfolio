@@ -1,15 +1,32 @@
+// HTML Sanitization Utility
+function sanitizeHTML(str) {
+    const div = document.createElement('div');
+    div.appendChild(document.createTextNode(str));
+    return div.innerHTML;
+}
+
+function sanitizeURL(url) {
+    try {
+        const parsed = new URL(url, window.location.origin);
+        if (['http:', 'https:'].includes(parsed.protocol)) {
+            return parsed.href;
+        }
+    } catch (e) {}
+    return '#';
+}
+
 // Portfolio Data
 const portfolioData = {
     fullstack: [
         {
             id: 1,
-            title: "Turny - Tournament Manager",
-            description: "Cryptographically secure tournament application with team registration, automated round progression, and real-time updates. Features abandoned match handling and Redis persistence with Docker deployment.",
-            image: "https://opengraph.githubassets.com/1/joegr/turny",
-            technologies: ["Flask", "Redis", "Docker", "JavaScript", "HTML", "Gherkin/BDD"],
-            github: "https://github.com/joegr/turny",
-            demo: "https://github.com/joegr/turny",
-            detailPage: "projects/turny.html"
+            title: "Soccer World Model (futwm)",
+            description: "Stochastic world-model-based prediction of soccer events with formal event ontology, Flask dashboard, and validated interchange formats. Features Monte Carlo rollouts, beam search prediction, and full-match simulation.",
+            image: "https://opengraph.githubassets.com/1/joegr/futwm",
+            technologies: ["Python", "Flask", "Pydantic", "JavaScript", "Monte Carlo", "JSON Schema"],
+            github: "https://github.com/joegr/futwm",
+            demo: "https://github.com/joegr/futwm",
+            detailPage: "projects/futwm.html"
         },
         {
             id: 2,
@@ -30,6 +47,16 @@ const portfolioData = {
             github: "https://github.com/joegr/owl",
             demo: "https://github.com/joegr/owl",
             detailPage: "projects/owl.html"
+        },
+        {
+            id: 4,
+            title: "POO - DAO Governance System",
+            description: "Enterprise-scale DAO governance with quadratic voting, multi-signature treasury, and polyglot persistence across PostgreSQL, MongoDB, Neo4j, InfluxDB, and Redis. Kubernetes-deployed with GraphQL + REST APIs.",
+            image: "https://opengraph.githubassets.com/1/joegr/poo",
+            technologies: ["Django", "GraphQL", "Kubernetes", "Docker", "PostgreSQL", "Neo4j"],
+            github: "https://github.com/joegr/poo",
+            demo: "https://github.com/joegr/poo",
+            detailPage: "projects/poo.html"
         }
     ],
     datascience: [
@@ -62,18 +89,28 @@ const portfolioData = {
             github: "https://github.com/joegr/native-sparse-attention",
             demo: "https://github.com/joegr/native-sparse-attention",
             detailPage: "projects/native-sparse-attention.html"
+        },
+        {
+            id: 4,
+            title: "Forge - MetalNeuralKit M4 Optimizer",
+            description: "Apple M4 Neural Engine optimization library for Metal-based neural networks. Custom compute kernels, half-precision Float16, MPSGraph integration, and Neural Engine acceleration with BDD testing.",
+            image: "https://opengraph.githubassets.com/1/joegr/forge",
+            technologies: ["Swift", "Metal", "Neural Engine", "MPSGraph", "Float16", "Gherkin/BDD"],
+            github: "https://github.com/joegr/forge",
+            demo: "https://github.com/joegr/forge",
+            detailPage: "projects/forge.html"
         }
     ],
     dataengineering: [
         {
             id: 1,
-            title: "Tower Scraper",
-            description: "Python web scraper for extracting and processing tower/infrastructure data. Clean, efficient scraping with modern Python practices.",
-            image: "https://opengraph.githubassets.com/1/joegr/63bf28b0fdc9d6823063753e4aee2386",
-            technologies: ["Python", "Web Scraping", "BeautifulSoup", "Requests"],
-            github: "https://gist.github.com/joegr/63bf28b0fdc9d6823063753e4aee2386",
-            demo: "https://gist.github.com/joegr/63bf28b0fdc9d6823063753e4aee2386",
-            detailPage: "projects/tower-scraper.html"
+            title: "Span - Blockchain ML Pipeline",
+            description: "Multi-language blockchain + NLP application combining Python ML processing with Rust-based Solana smart contracts. Dockerized microservices with Flask API and concurrent request handling.",
+            image: "https://opengraph.githubassets.com/1/joegr/span",
+            technologies: ["Python", "Rust", "Solana", "Flask", "Docker", "NLP"],
+            github: "https://github.com/joegr/span",
+            demo: "https://github.com/joegr/span",
+            detailPage: "projects/span.html"
         },
         {
             id: 2,
@@ -183,16 +220,16 @@ function renderPortfolioProjects() {
 // Create Article Card HTML
 function createArticleCard(article) {
     const tagsHTML = article.tags.length > 0 
-        ? article.tags.map(tag => `<span class="article-tag">${tag}</span>`).join('') 
+        ? article.tags.map(tag => `<span class="article-tag">${sanitizeHTML(tag)}</span>`).join('') 
         : '';
     return `
         <article class="article-card reveal">
             <div class="article-content">
-                <div class="article-date">${article.date}</div>
-                <h3 class="article-title">${article.title}</h3>
-                <p class="article-excerpt">${article.excerpt}</p>
+                <div class="article-date">${sanitizeHTML(article.date)}</div>
+                <h3 class="article-title">${sanitizeHTML(article.title)}</h3>
+                <p class="article-excerpt">${sanitizeHTML(article.excerpt)}</p>
                 <div class="article-tags">${tagsHTML}</div>
-                <a href="${article.url}" target="_blank" class="article-link">
+                <a href="${sanitizeURL(article.url)}" target="_blank" rel="noopener noreferrer" class="article-link">
                     <i class="fab fa-linkedin"></i> Read on LinkedIn
                 </a>
             </div>
@@ -202,20 +239,20 @@ function createArticleCard(article) {
 
 // Create Project Card HTML
 function createProjectCard(project) {
-    const detailLink = project.detailPage ? `<a href="${project.detailPage}" class="portfolio-link detail-link"><i class="fas fa-info-circle"></i> Details</a>` : '';
+    const detailLink = project.detailPage ? `<a href="${sanitizeURL(project.detailPage)}" class="portfolio-link detail-link"><i class="fas fa-info-circle"></i> Details</a>` : '';
     return `
         <div class="portfolio-card reveal">
-            <a href="${project.detailPage || project.github}" class="portfolio-image-link">
-                <img src="${project.image}" alt="${project.title}" class="portfolio-image">
+            <a href="${sanitizeURL(project.detailPage || project.github)}" class="portfolio-image-link">
+                <img src="${sanitizeURL(project.image)}" alt="${sanitizeHTML(project.title)}" class="portfolio-image">
             </a>
             <div class="portfolio-content">
-                <h3 class="portfolio-title">${project.title}</h3>
-                <p class="portfolio-description">${project.description}</p>
+                <h3 class="portfolio-title">${sanitizeHTML(project.title)}</h3>
+                <p class="portfolio-description">${sanitizeHTML(project.description)}</p>
                 <div class="portfolio-tech">
-                    ${project.technologies.map(tech => `<span class="tech-tag">${tech}</span>`).join('')}
+                    ${project.technologies.map(tech => `<span class="tech-tag">${sanitizeHTML(tech)}</span>`).join('')}
                 </div>
                 <div class="portfolio-links">
-                    <a href="${project.github}" target="_blank" class="portfolio-link">
+                    <a href="${sanitizeURL(project.github)}" target="_blank" rel="noopener noreferrer" class="portfolio-link">
                         <i class="fab fa-github"></i> Code
                     </a>
                     ${detailLink}

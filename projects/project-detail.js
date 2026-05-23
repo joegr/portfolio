@@ -1,23 +1,42 @@
+// HTML Sanitization Utility
+function sanitizeHTML(str) {
+    const div = document.createElement('div');
+    div.appendChild(document.createTextNode(str));
+    return div.innerHTML;
+}
+
+function sanitizeURL(url) {
+    try {
+        const parsed = new URL(url, window.location.origin);
+        if (['http:', 'https:'].includes(parsed.protocol)) {
+            return parsed.href;
+        }
+    } catch (e) {}
+    return '#';
+}
+
 // Project Detail Data - All project information in one place
 const projectDetails = {
-    turny: {
-        title: "Turny - Tournament Manager",
+    futwm: {
+        title: "Soccer World Model (futwm)",
         category: "fullstack",
-        categoryLabel: "Full Stack",
+        categoryLabel: "Full Stack / Data Engineering",
         backLink: "../index.html#fullstack",
-        github: "https://github.com/joegr/turny",
-        technologies: ["Flask", "Redis", "Docker", "JavaScript", "HTML", "Gherkin/BDD", "REST API"],
+        github: "https://github.com/joegr/futwm",
+        technologies: ["Python", "Flask", "Pydantic", "JavaScript", "Monte Carlo", "JSON Schema", "CSV", "Stochastic Modeling"],
         screenshots: [],
-        overview: "A minimal, cryptographically secure tournament application for participation in any type of tournament. Features time-based deterministic round progression with real-time updates and complete containerized deployment.",
+        overview: "Stochastic, world-model-based prediction of soccer events with a formal event ontology and validated interchange formats (JSON / CSV). Includes a Flask dashboard, full-match simulation, and configurable pitch geometry.",
         features: [
-            "Team Registration: Captains register teams with minimal data (username + team name)",
-            "Tournament Automation: Time-based deterministic round progression",
-            "Abandoned Match Handling: Timed-out matches result in losses for both teams",
-            "Real-time Updates: Frontend polls for state changes every 5 seconds",
-            "Redis Persistence: All tournament data stored in Redis",
-            "Docker Wrapped: Complete containerized deployment"
+            "Event Ontology: Versioned schema (v0.1.0) as single source of truth for all data",
+            "Stochastic Transition Model: Phase-conditioned Markov weights with feature modifiers (pressure, distance to goal, goal angle)",
+            "Prediction Engine: Top-k next events, beam search over event-type sequences, Monte Carlo rollouts",
+            "Match Simulation: Full 90-minute match simulation with possession chains",
+            "Pitch Geometry: FIFA-standard 105x68m with zones, areas, pressure index, and spatial helpers",
+            "Interchange Formats: Lossless JSON and tabular CSV with strict Pydantic validation",
+            "Flask Dashboard: Server-side visualization and analytics interface",
+            "JSON Schema Export: Downstream tooling support via exported schema"
         ],
-        technicalDetails: "Backend built with Flask + Redis. Frontend uses vanilla JavaScript with no frameworks. Deployed via Docker + Docker Compose. Round duration is configurable (default 5 minutes per round)."
+        technicalDetails: "Architecture: ontology.py (enum taxonomy, constraints), schema.py (Pydantic v2 models), interchange.py (JSON/CSV read/write with validation), pitch.py (spatial helpers), world_model.py (mutable PlayerState/BallState/GameState/WorldState), stochastic.py (parametric transition model P(e_{t+1} | world_state_t)), predictor.py (top-k, beam search, Monte Carlo), simulation.py (possession chains, full-match). Languages: Python 77%, JavaScript 16.1%, CSS 4.7%, HTML 2.2%. Uses AdamW-like fitting to observed data, bivariate Gaussian destinations conditioned on phase/zone, and per-event Bernoulli/categorical outcomes."
     },
     fold: {
         title: "Fold - Circuit Card Encryption Generator",
@@ -113,22 +132,69 @@ const projectDetails = {
         ],
         technicalDetails: "Three-branch attention architecture with configurable block length/stride for compression, selection block size/count, sliding window size, and head dimensions. Requires CUDA Toolkit 11.0+, CMake 3.18+, and C/C++ compiler with C11/C++14 support. Languages: 52.7% CUDA, 43.2% C, 4.1% CMake."
     },
-    "tower-scraper": {
-        title: "Tower Scraper",
+    forge: {
+        title: "Forge - MetalNeuralKit M4 Optimizer",
+        category: "datascience",
+        categoryLabel: "Data Science",
+        backLink: "../index.html#datascience",
+        github: "https://github.com/joegr/forge",
+        technologies: ["Swift", "Metal", "Apple Neural Engine", "MPSGraph", "Float16", "Gherkin/BDD"],
+        screenshots: [],
+        overview: "Apple M4 Neural Engine optimization library for Metal-based neural networks. Provides custom compute kernels, half-precision Float16 acceleration, MPSGraph integration, and Neural Engine layer support with BDD testing via Gherkin specifications.",
+        features: [
+            "Half-Precision (Float16): Significant M4 performance gains with configurable precision per layer",
+            "Neural Engine Acceleration: Native support for convolution and fully-connected layers via useNeuralEngine flag",
+            "Batch Operations: Maximized throughput with batched GPU processing",
+            "Persistent Buffers: Minimized CPU-GPU data transfers with shared storage mode",
+            "MPSGraph Integration: Automatic operation optimization for M4 architecture",
+            "Custom Compute Kernels: Metal shader-based custom operations",
+            "Performance Monitoring: Built-in profiling and troubleshooting tools",
+            "BDD Testing: Gherkin/Cucumber specifications for behavior-driven development"
+        ],
+        technicalDetails: "Built in Swift (89.5%) with Gherkin BDD specs (10.5%). Targets Apple M4 architecture with enhanced Neural Engine, optimized GPU cores, high-bandwidth unified memory, and advanced matrix multiplication units. Key classes: M4Optimizer (singleton configurator), ConvolutionLayer, FullyConnectedLayer. Supports storageModeShared persistent buffers and MPSGraph executable compilation for complex tensor operations."
+    },
+    poo: {
+        title: "POO - DAO Governance System",
+        category: "fullstack",
+        categoryLabel: "Full Stack",
+        backLink: "../index.html#fullstack",
+        github: "https://github.com/joegr/poo",
+        technologies: ["Django", "GraphQL", "Kubernetes", "Docker", "Terraform", "PostgreSQL", "MongoDB", "Neo4j", "InfluxDB", "Redis", "Gherkin/BDD"],
+        screenshots: [],
+        overview: "Enterprise-scale DAO governance system implementing proposal creation, quadratic voting, and secure treasury management. Features polyglot persistence across five databases with Kubernetes deployment and multi-signature wallet integration.",
+        features: [
+            "Proposal Lifecycle: Creation, voting, and automated execution",
+            "Quadratic Voting: Supermajority requirements for governance decisions",
+            "Treasury Management: Secure multi-signature wallet integration",
+            "Member Identity Verification: Cryptographic identity layer",
+            "Analytics Dashboard: D3.js visualizations with time-series metrics",
+            "Polyglot Persistence: PostgreSQL, MongoDB, Neo4j, InfluxDB, Redis",
+            "Dual API: GraphQL (Graphene) and REST (DRF) endpoints",
+            "Infrastructure: Kubernetes manifests, Docker, Terraform IaC",
+            "Security: JWT + MFA, rate limiting, circuit breakers"
+        ],
+        technicalDetails: "Backend: Django + Django REST Framework + Graphene Django. Frontend: Vanilla JavaScript with D3.js visualizations. Databases: PostgreSQL (relational), MongoDB (proposal content), Neo4j (relationship graphs), InfluxDB (time-series metrics), Redis (caching/message broker). Infrastructure: Kubernetes (k8s/ manifests), Docker, Terraform. Security: JWT authentication, multi-factor auth, rate limiting, circuit breakers for critical operations, multi-sig treasury approval. Languages: Python 71.6%, Gherkin 25.3%, Shell 1.7%, Dockerfile 1.4%."
+    },
+    span: {
+        title: "Span - Blockchain ML Pipeline",
         category: "dataengineering",
         categoryLabel: "Data Engineering",
         backLink: "../index.html#dataengineering",
-        github: "https://gist.github.com/joegr/63bf28b0fdc9d6823063753e4aee2386",
-        technologies: ["Python", "Web Scraping", "BeautifulSoup", "Requests", "Data Extraction"],
+        github: "https://github.com/joegr/span",
+        technologies: ["Python", "Rust", "Solana", "Flask", "Docker", "NLP", "BLIS/ATLAS"],
         screenshots: [],
-        overview: "Python web scraper for extracting and processing tower/infrastructure data. Demonstrates clean scraping patterns with modern Python practices.",
+        overview: "Multi-language blockchain + NLP application combining Python ML text processing with Rust-based Solana smart contract execution. Dockerized microservices architecture with Flask API server and concurrent request handling.",
         features: [
-            "Efficient web scraping with Python",
-            "Data extraction and parsing",
-            "Clean, readable implementation",
-            "Modern Python practices"
+            "NLP Processing: State-of-the-art ML text processing pipeline",
+            "Solana Smart Contracts: Rust-based blockchain transaction execution",
+            "Flask API Server: RESTful interface on port 5000",
+            "Docker Compose Deployment: Single-command multi-service orchestration",
+            "Concurrent Request Handling: Async processing for high throughput",
+            "Health Checks: Automated 30-second liveness probes with 10-second timeout",
+            "Multi-Language: Python (ML/API) + Rust (blockchain/contracts)",
+            "BLIS/ATLAS Integration: Optimized linear algebra for ML workloads"
         ],
-        technicalDetails: "Pure Python implementation (towerscraper.py) for web data extraction. Uses standard Python libraries for HTTP requests and HTML parsing."
+        technicalDetails: "Languages: Python 67.9%, Rust 11%, PowerShell 10.6%, Shell 8.1%, Dockerfile 2.4%. Services run on ports 5000 (Flask API), 8899, 8900 (Solana). Dependencies: Python (ML/Flask), Rust (Solana smart contracts), BLIS/ATLAS (optimized math), Solana CLI (blockchain interface). Configuration via .env with Docker secrets management. Health checks every 30 seconds with 10-second timeout threshold."
     },
     "vigenere-cipher": {
         title: "Vigenère Cipher",
@@ -171,22 +237,22 @@ function renderProjectDetail() {
     const screenshotsHTML = project.screenshots.length > 0 
         ? project.screenshots.map(src => `
             <div class="screenshot-item">
-                <img src="${src}" alt="${project.title} Screenshot" loading="lazy">
+                <img src="${sanitizeURL(src)}" alt="${sanitizeHTML(project.title)} Screenshot" loading="lazy">
             </div>
         `).join('')
         : '<p class="placeholder-text">Screenshots coming soon</p>';
 
     const featuresHTML = project.features.length > 0
-        ? `<ul>${project.features.map(f => `<li>${f}</li>`).join('')}</ul>`
+        ? `<ul>${project.features.map(f => `<li>${sanitizeHTML(f)}</li>`).join('')}</ul>`
         : '<ul><li>Features to be added</li></ul>';
 
     const content = `
         <div class="project-header">
-            <a href="${project.backLink}" class="back-link"><i class="fas fa-arrow-left"></i> Back to Portfolio</a>
-            <h1>${project.title}</h1>
+            <a href="${sanitizeURL(project.backLink)}" class="back-link"><i class="fas fa-arrow-left"></i> Back to Portfolio</a>
+            <h1>${sanitizeHTML(project.title)}</h1>
             <div class="project-meta">
-                <span class="category-badge ${project.category}">${project.categoryLabel}</span>
-                <a href="${project.github}" class="github-link" target="_blank">
+                <span class="category-badge ${sanitizeHTML(project.category)}">${sanitizeHTML(project.categoryLabel)}</span>
+                <a href="${sanitizeURL(project.github)}" class="github-link" target="_blank" rel="noopener noreferrer">
                     <i class="fab fa-github"></i> View on GitHub
                 </a>
             </div>
@@ -201,13 +267,13 @@ function renderProjectDetail() {
 
         <section class="project-overview">
             <h2>Overview</h2>
-            <p>${project.overview || 'Project overview coming soon.'}</p>
+            <p>${sanitizeHTML(project.overview || 'Project overview coming soon.')}</p>
         </section>
 
         <section class="project-tech">
             <h2>Technologies</h2>
             <div class="tech-tags">
-                ${project.technologies.map(tech => `<span class="tech-tag">${tech}</span>`).join('')}
+                ${project.technologies.map(tech => `<span class="tech-tag">${sanitizeHTML(tech)}</span>`).join('')}
             </div>
         </section>
 
@@ -218,7 +284,7 @@ function renderProjectDetail() {
 
         <section class="project-details">
             <h2>Technical Details</h2>
-            <p>${project.technicalDetails || 'Technical details coming soon.'}</p>
+            <p>${sanitizeHTML(project.technicalDetails || 'Technical details coming soon.')}</p>
         </section>
     `;
 
