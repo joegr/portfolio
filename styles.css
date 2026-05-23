@@ -115,17 +115,15 @@ body {
     align-items: center;
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: white;
-    padding-top: 70px;
 }
 
 .hero-container {
-    max-width: 1200px;
-    margin: 0 auto;
+    width: 100%;
     padding: 0 20px;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 4rem;
+    display: flex;
+    flex-direction: column;
     align-items: center;
+    text-align: center;
 }
 
 .hero-title {
@@ -145,6 +143,7 @@ body {
     display: flex;
     gap: 1rem;
     flex-wrap: wrap;
+    justify-content: center;
 }
 
 .btn {
@@ -181,11 +180,10 @@ body {
 
 .github-contributions {
     width: 100%;
-    max-width: 500px;
-    border-radius: 12px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-    margin: 0 auto;
+    max-width: 900px;
     display: block;
+    margin-bottom: 2.5rem;
+    opacity: 0.85;
 }
 
 /* Portfolio Sections */
@@ -545,17 +543,8 @@ body {
         display: flex;
     }
 
-    .hero-container {
-        grid-template-columns: 1fr;
-        text-align: center;
-    }
-
     .hero-title {
         font-size: 2.5rem;
-    }
-
-    .github-contributions {
-        max-width: 100%;
     }
 
     .portfolio-grid {
