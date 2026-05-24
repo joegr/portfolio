@@ -126,6 +126,10 @@ a h1, a h2, a h3, a h4, a h5, a h6 {
     color: white;
 }
 
+.hero * {
+    color: white;
+}
+
 .hero-container {
     width: 100%;
     padding: 0 20px;
@@ -193,8 +197,8 @@ a h1, a h2, a h3, a h4, a h5, a h6 {
     max-width: 900px;
     display: block;
     margin-bottom: 2.5rem;
+    filter: brightness(0) invert(1);
     opacity: 0.85;
-    color: #ffffff;
 }
 
 /* Portfolio Sections */
