@@ -76,7 +76,10 @@
                 .style('white-space', 'nowrap')
                 .style('z-index', '10');
 
-            // Cells
+            // Cells — animate column by column in sync with typing animation
+            var typingDuration = 800; // ~16 chars * 50ms
+            var delayPerWeek = typingDuration / weeks;
+
             svg.selectAll('.contrib-cell')
                 .data(contributions)
                 .enter()
@@ -89,6 +92,12 @@
                 .attr('rx', 2)
                 .attr('ry', 2)
                 .attr('fill', function(d) { return colors[d.level] || colors[0]; })
+                .attr('opacity', 0)
+                .transition()
+                .delay(function(d, i) { return Math.floor(i / 7) * delayPerWeek; })
+                .duration(200)
+                .attr('opacity', 1)
+                .selection()
                 .style('cursor', 'pointer')
                 .on('mouseover', function(event, d) {
                     var count = d.count;
