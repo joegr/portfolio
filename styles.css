@@ -67,6 +67,15 @@ body {
     gap: 2rem;
 }
 
+h1, h2, h3, h4, h5, h6,
+a h1, a h2, a h3, a h4, a h5, a h6 {
+    text-decoration: none;
+}
+
+.portfolio-image-link {
+    text-decoration: none;
+}
+
 .nav-link {
     text-decoration: none;
     color: var(--text-dark);
@@ -131,6 +140,7 @@ body {
     font-weight: 700;
     margin-bottom: 1rem;
     line-height: 1.2;
+    text-decoration: none;
 }
 
 .hero-subtitle {
@@ -203,6 +213,7 @@ body {
 .section-header h2 {
     font-size: 2.5rem;
     margin-bottom: 1rem;
+    text-decoration: none;
     background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -279,6 +290,7 @@ body {
     font-size: 1.25rem;
     font-weight: 600;
     margin-bottom: 0.5rem;
+    text-decoration: none;
 }
 
 .portfolio-description {
@@ -374,6 +386,7 @@ body {
 .article-title {
     font-size: 1.25rem;
     margin-bottom: 0.75rem;
+    text-decoration: none;
     color: var(--text-color);
     line-height: 1.4;
 }
