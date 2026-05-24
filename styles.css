@@ -123,11 +123,6 @@ a h1, a h2, a h3, a h4, a h5, a h6 {
     display: flex;
     align-items: center;
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-}
-
-.hero * {
-    color: white;
 }
 
 .hero-container {
@@ -197,7 +192,6 @@ a h1, a h2, a h3, a h4, a h5, a h6 {
     max-width: 900px;
     display: block;
     margin-bottom: 2.5rem;
-    filter: brightness(0) invert(1);
     opacity: 0.85;
 }
 
