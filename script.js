@@ -1,50 +1,48 @@
-// D3.js GitHub Contributions Heatmap
+// ---------- D3 GitHub Contributions Heatmap ----------
 (function renderContributions() {
     const container = document.getElementById('github-contributions');
     if (!container || typeof d3 === 'undefined') return;
 
     fetch('contributions.json')
-        .then(function(res) { return res.json(); })
-        .then(function(data) {
-            var contributions = data.contributions;
+        .then(res => res.json())
+        .then(data => {
+            const contributions = data.contributions;
             if (!contributions || !contributions.length) return;
 
-            var cellSize = 11;
-            var cellPadding = 2;
-            var totalSize = cellSize + cellPadding;
-            var weeks = Math.ceil(contributions.length / 7);
-            var width = weeks * totalSize + 40;
-            var height = 7 * totalSize + 30;
+            const cellSize = 11;
+            const cellPadding = 2;
+            const totalSize = cellSize + cellPadding;
+            const weeks = Math.ceil(contributions.length / 7);
+            const width = weeks * totalSize + 40;
+            const height = 7 * totalSize + 30;
 
-            var colors = ['rgba(255,255,255,0)', 'rgba(255,255,255,0.25)', 'rgba(255,255,255,0.5)', 'rgba(255,255,255,0.75)', 'rgba(255,255,255,1)'];
+            const colors = ['#f3f4f6', '#fed7aa', '#fb923c', '#c2410c', '#7c2d12'];
 
-            var svg = d3.select(container)
+            const svg = d3.select(container)
                 .append('svg')
-                .attr('viewBox', '0 0 ' + width + ' ' + height)
+                .attr('viewBox', `0 0 ${width} ${height}`)
                 .attr('preserveAspectRatio', 'xMidYMid meet')
                 .style('width', '100%')
                 .style('height', 'auto')
                 .style('display', 'block');
 
-            // Day labels
-            var days = ['Mon', 'Wed', 'Fri'];
-            var dayPositions = [1, 3, 5];
+            const days = ['Mon', 'Wed', 'Fri'];
+            const dayPositions = [1, 3, 5];
             svg.selectAll('.day-label')
                 .data(days)
                 .enter()
                 .append('text')
                 .attr('x', 0)
-                .attr('y', function(d, i) { return dayPositions[i] * totalSize + 24 + cellSize / 2; })
-                .attr('fill', 'rgba(255,255,255,0.7)')
+                .attr('y', (d, i) => dayPositions[i] * totalSize + 24 + cellSize / 2)
+                .attr('fill', '#6b7280')
                 .attr('font-size', '9px')
-                .attr('font-family', 'Inter, sans-serif')
+                .attr('font-family', 'ui-monospace, monospace')
                 .attr('dominant-baseline', 'middle')
-                .text(function(d) { return d; });
+                .text(d => d);
 
-            // Month labels
-            var months = [];
-            contributions.forEach(function(c, i) {
-                var date = new Date(c.date);
+            const months = [];
+            contributions.forEach((c, i) => {
+                const date = new Date(c.date);
                 if (date.getDate() <= 7 && date.getDay() === 0) {
                     months.push({ name: date.toLocaleString('en', { month: 'short' }), week: Math.floor(i / 7) });
                 }
@@ -53,80 +51,76 @@
                 .data(months)
                 .enter()
                 .append('text')
-                .attr('x', function(d) { return d.week * totalSize + 40; })
+                .attr('x', d => d.week * totalSize + 40)
                 .attr('y', 12)
-                .attr('fill', 'rgba(255,255,255,0.7)')
+                .attr('fill', '#6b7280')
                 .attr('font-size', '9px')
-                .attr('font-family', 'Inter, sans-serif')
-                .text(function(d) { return d.name; });
+                .attr('font-family', 'ui-monospace, monospace')
+                .text(d => d.name);
 
-            // Tooltip
-            var tooltip = d3.select(container)
+            const tooltip = d3.select(container)
                 .append('div')
                 .style('position', 'absolute')
-                .style('background', 'rgba(0,0,0,0.85)')
+                .style('background', '#0a0a0a')
                 .style('color', '#fff')
-                .style('padding', '6px 10px')
-                .style('border-radius', '6px')
-                .style('font-size', '12px')
-                .style('font-family', 'Inter, sans-serif')
+                .style('padding', '5px 8px')
+                .style('border-radius', '3px')
+                .style('font-size', '11px')
+                .style('font-family', 'ui-monospace, monospace')
                 .style('pointer-events', 'none')
                 .style('opacity', '0')
                 .style('transition', 'opacity 0.15s')
                 .style('white-space', 'nowrap')
                 .style('z-index', '10');
 
-            // Cells — animate column by column in sync with typing animation
-            var typingDuration = 800; // ~16 chars * 50ms
-            var delayPerWeek = typingDuration / weeks;
+            // Reveal column-by-column, left to right
+            const totalDuration = 800;
+            const delayPerWeek = totalDuration / weeks;
 
             svg.selectAll('.contrib-cell')
                 .data(contributions)
                 .enter()
                 .append('rect')
                 .attr('class', 'contrib-cell')
-                .attr('x', function(d, i) { return Math.floor(i / 7) * totalSize + 40; })
-                .attr('y', function(d, i) { return (i % 7) * totalSize + 20; })
+                .attr('x', (d, i) => Math.floor(i / 7) * totalSize + 40)
+                .attr('y', (d, i) => (i % 7) * totalSize + 20)
                 .attr('width', cellSize)
                 .attr('height', cellSize)
                 .attr('rx', 2)
                 .attr('ry', 2)
-                .attr('fill', function(d) { return colors[d.level] || colors[0]; })
+                .attr('fill', d => colors[d.level] || colors[0])
                 .attr('opacity', 0)
                 .transition()
-                .delay(function(d, i) { return Math.floor(i / 7) * delayPerWeek; })
+                .delay((d, i) => Math.floor(i / 7) * delayPerWeek)
                 .duration(200)
                 .attr('opacity', 1)
                 .selection()
                 .style('cursor', 'pointer')
                 .on('mouseover', function(event, d) {
-                    var count = d.count;
-                    var dateStr = new Date(d.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-                    var label = count === 0 ? 'No contributions' : count + ' contribution' + (count > 1 ? 's' : '');
-                    tooltip.html('<strong>' + label + '</strong> on ' + dateStr)
-                        .style('opacity', '1');
-                    d3.select(this).attr('stroke', '#fff').attr('stroke-width', '1.5');
+                    const count = d.count;
+                    const dateStr = new Date(d.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+                    const label = count === 0 ? 'No contributions' : `${count} contribution${count > 1 ? 's' : ''}`;
+                    tooltip.html(`${label} · ${dateStr}`).style('opacity', '1');
+                    d3.select(this).attr('stroke', '#0a0a0a').attr('stroke-width', '1');
                 })
                 .on('mousemove', function(event) {
-                    var rect = container.getBoundingClientRect();
+                    const rect = container.getBoundingClientRect();
                     tooltip
                         .style('left', (event.clientX - rect.left + 12) + 'px')
-                        .style('top', (event.clientY - rect.top - 30) + 'px');
+                        .style('top', (event.clientY - rect.top - 28) + 'px');
                 })
                 .on('mouseout', function() {
                     tooltip.style('opacity', '0');
                     d3.select(this).attr('stroke', 'none');
                 });
         })
-        .catch(function(err) {
-            console.error('Failed to load contributions:', err);
-        });
+        .catch(err => console.error('Failed to load contributions:', err));
 })();
 
-// HTML Sanitization Utility
+// ---------- Sanitization ----------
 function sanitizeHTML(str) {
     const div = document.createElement('div');
-    div.appendChild(document.createTextNode(str));
+    div.appendChild(document.createTextNode(str ?? ''));
     return div.innerHTML;
 }
 
@@ -135,404 +129,233 @@ function sanitizeURL(url) {
     if (url.startsWith('http://') || url.startsWith('https://')) {
         try {
             const parsed = new URL(url);
-            if (['http:', 'https:'].includes(parsed.protocol)) {
-                return parsed.href;
-            }
+            if (['http:', 'https:'].includes(parsed.protocol)) return parsed.href;
         } catch (e) {}
         return '#';
     }
-    if (url.startsWith('javascript:') || url.startsWith('data:')) {
-        return '#';
-    }
+    if (url.startsWith('javascript:') || url.startsWith('data:')) return '#';
     return url;
 }
 
-// Portfolio Data
+// ---------- Data ----------
 const portfolioData = {
     fullstack: [
         {
-            id: 1,
             title: "Soccer World Model (futwm)",
             description: "Stochastic world-model-based prediction of soccer events with formal event ontology, Flask dashboard, and validated interchange formats. Features Monte Carlo rollouts, beam search prediction, and full-match simulation.",
-            image: "https://opengraph.githubassets.com/1/joegr/futwm",
             technologies: ["Python", "Flask", "Pydantic", "JavaScript", "Monte Carlo", "JSON Schema"],
             github: "https://github.com/joegr/futwm",
-            demo: "https://github.com/joegr/futwm",
             detailPage: "projects/futwm.html"
         },
         {
-            id: 2,
-            title: "Fold - Circuit Card Encryption Generator",
+            title: "Fold — Circuit Card Encryption Generator",
             description: "Interactive circuit card simulator with 3D visualization and encryption algorithm generation. Create custom logic elements, stack circuit layers, and export real Python encryption code based on circuit design.",
-            image: "https://opengraph.githubassets.com/1/joegr/fold",
             technologies: ["React", "Flask", "Three.js", "TypeScript", "Python", "AES"],
             github: "https://github.com/joegr/fold",
-            demo: "https://github.com/joegr/fold",
             detailPage: "projects/fold.html"
         },
         {
-            id: 3,
-            title: "Owl - Email CRM",
+            title: "Owl — Email CRM",
             description: "Email-based CRM system with contact management, template creation, bulk email sending, and analytics dashboard. Built with Django backend and BDD testing using Gherkin/Cucumber specifications.",
-            image: "https://opengraph.githubassets.com/1/joegr/owl",
             technologies: ["Python", "Django", "JavaScript", "HTML", "Gherkin/BDD", "SMTP"],
             github: "https://github.com/joegr/owl",
-            demo: "https://github.com/joegr/owl",
             detailPage: "projects/owl.html"
         },
         {
-            id: 4,
-            title: "POO - DAO Governance System",
+            title: "POO — DAO Governance System",
             description: "Enterprise-scale DAO governance with quadratic voting, multi-signature treasury, and polyglot persistence across PostgreSQL, MongoDB, Neo4j, InfluxDB, and Redis. Kubernetes-deployed with GraphQL + REST APIs.",
-            image: "https://opengraph.githubassets.com/1/joegr/poo",
             technologies: ["Django", "GraphQL", "Kubernetes", "Docker", "PostgreSQL", "Neo4j"],
             github: "https://github.com/joegr/poo",
-            demo: "https://github.com/joegr/poo",
             detailPage: "projects/poo.html"
         }
     ],
     datascience: [
         {
-            id: 1,
-            title: "Elo Garden - LLM from Scratch",
+            title: "Elo Garden — LLM from Scratch",
             description: "Complete LLM training infrastructure with custom Transformer architecture, BPE tokenizer, and full training pipeline. Features TensorBoard monitoring, checkpointing, and configurable text generation with temperature/top-k/top-p sampling.",
-            image: "https://opengraph.githubassets.com/1/joegr/elo-garden",
             technologies: ["Python", "PyTorch", "Transformers", "BPE Tokenizer", "TensorBoard", "AdamW"],
             github: "https://github.com/joegr/elo-garden/tree/main/services",
-            demo: "https://github.com/joegr/elo-garden",
             detailPage: "projects/elo-garden.html"
         },
         {
-            id: 2,
-            title: "Phonemescape - IPA Analysis Library",
+            title: "Phonemescape — IPA Analysis Library",
             description: "Comprehensive phoneme analysis library with IPA vowel/consonant visualization, mouth shape similarity calculation, and network graph generation. Features articulatory feature analysis and word phoneme breakdown.",
-            image: "https://opengraph.githubassets.com/1/joegr/ipaba",
             technologies: ["Python", "Plotly", "NetworkX", "IPA", "Linguistics", "pip package"],
             github: "https://github.com/joegr/ipaba",
-            demo: "https://github.com/joegr/ipaba",
             detailPage: "projects/phonemescape.html"
         },
         {
-            id: 3,
             title: "Native Sparse Attention (NSA)",
             description: "CUDA implementation of sparse attention with three-branch architecture: compressed token, selected token, and sliding window branches. Optimized kernels with shared memory utilization.",
-            image: "https://opengraph.githubassets.com/1/joegr/native-sparse-attention",
             technologies: ["CUDA", "C", "CMake", "Sparse Attention", "GPU Kernels"],
             github: "https://github.com/joegr/native-sparse-attention",
-            demo: "https://github.com/joegr/native-sparse-attention",
             detailPage: "projects/native-sparse-attention.html"
         },
         {
-            id: 4,
-            title: "Forge - MetalNeuralKit M4 Optimizer",
+            title: "Forge — MetalNeuralKit M4 Optimizer",
             description: "Apple M4 Neural Engine optimization library for Metal-based neural networks. Custom compute kernels, half-precision Float16, MPSGraph integration, and Neural Engine acceleration with BDD testing.",
-            image: "https://opengraph.githubassets.com/1/joegr/forge",
             technologies: ["Swift", "Metal", "Neural Engine", "MPSGraph", "Float16", "Gherkin/BDD"],
             github: "https://github.com/joegr/forge",
-            demo: "https://github.com/joegr/forge",
             detailPage: "projects/forge.html"
         }
     ],
     dataengineering: [
         {
-            id: 1,
-            title: "Span - Blockchain ML Pipeline",
+            title: "Span — Blockchain ML Pipeline",
             description: "Multi-language blockchain + NLP application combining Python ML processing with Rust-based Solana smart contracts. Dockerized microservices with Flask API and concurrent request handling.",
-            image: "https://opengraph.githubassets.com/1/joegr/span",
             technologies: ["Python", "Rust", "Solana", "Flask", "Docker", "NLP"],
             github: "https://github.com/joegr/span",
-            demo: "https://github.com/joegr/span",
             detailPage: "projects/span.html"
         },
         {
-            id: 2,
             title: "Vigenère Cipher",
             description: "Cryptographic cipher implementation with random key generation from printable character sets. Demonstrates classical encryption algorithms with modern Python practices.",
-            image: "https://opengraph.githubassets.com/1/joegr/37724d7a3c6bf1ad8d1ae5fff67ff7ee",
             technologies: ["Python", "Cryptography", "Classical Ciphers"],
             github: "https://gist.github.com/joegr/37724d7a3c6bf1ad8d1ae5fff67ff7ee",
-            demo: "https://gist.github.com/joegr/37724d7a3c6bf1ad8d1ae5fff67ff7ee",
             detailPage: "projects/vigenere-cipher.html"
         }
     ],
     writings: [
         {
-            id: 1,
             title: "Alignment Means You Already Messed Up: Ethics in ML",
-            excerpt: "And some of our conscious heuristics and unconscious associations are rooted in faculties that have emerged from evolution. For example, as infants grow they begin to build a model of the world informed by these emergent faculties. Pure sense data, differences in light reflections of shaped objects, the arrangement of features like eyes and mouths become: faces of mom, dad, siblings. Before we recognize, our meta-mammal faculty computes: is this a related species? We intuit faces—seeing them where they are not, fashioning our designs of cars and household objects appropriating the recognizable, right-side-up structure of a face. Likewise, objects that grow rapidly in the field of vision, babies react to with fear, without any association to the object itself.",
-            date: "",
+            excerpt: "Some of our conscious heuristics and unconscious associations are rooted in faculties that have emerged from evolution. As infants grow they begin to build a model of the world informed by these emergent faculties—pure sense data, differences in light reflections of shaped objects, the arrangement of features like eyes and mouths become: faces of mom, dad, siblings.",
             url: "https://www.linkedin.com/pulse/alignment-means-you-already-messed-up-ethics-ml-joseph-gruenbaum-fosdc/",
             tags: ["AI Ethics", "Machine Learning", "Alignment"]
         },
         {
-            id: 2,
             title: "10 Turing Benchmarks",
-            excerpt: "Many orders of magnitude by computational possibility more complex than Chess is Go—but machines are way better than us at this too, both the open source engines and especially reinforcement learning through self-play have resulted in skewed losses that embarrass shaking human hands. We thought this wouldn't fall after Chess; but the optimization core was there. All it took was changing some input parameters and adapting the problem space - see the paper above for details.",
-            date: "",
+            excerpt: "Many orders of magnitude by computational possibility more complex than Chess is Go—but machines are way better than us at this too. We thought this wouldn't fall after Chess; but the optimization core was there. All it took was changing some input parameters and adapting the problem space.",
             url: "https://www.linkedin.com/pulse/10-turing-benchmarks-joseph-gruenbaum/",
             tags: ["AI", "Turing Test", "Benchmarks"]
         },
         {
-            id: 3,
             title: "The Responsibility to Pretend in AI",
-            excerpt: "Classical realists love to imbue anarchy with fatalism, and domestic political squabbles with prescribed apathy. New realists eliminate this fortune-based setup, positing anarchy as a zero-sum vacuum without the proclivities of hubris. This critique is anti-Kantian, and counter to the way many have conceived of international organization post-Fukuyama, but this critique does not explain or predict well the behavior of states in the TikTok era. As states become better at triggering the snap-reactions of the media, manufacturing information and discourse, democracies themselves stand to lose whatever theoretical footing IR theories build for justification, be them institutionalist or normative or both. Why? How would Carr evaluate state behavior and domestic political influence on IR today, in the wild world we live in?",
-            date: "",
+            excerpt: "Classical realists love to imbue anarchy with fatalism, and domestic political squabbles with prescribed apathy. New realists eliminate this fortune-based setup. As states become better at triggering the snap-reactions of the media, manufacturing information and discourse, democracies themselves stand to lose whatever theoretical footing IR theories build for justification.",
             url: "https://www.linkedin.com/pulse/responsibility-pretend-ir-ai-joseph-gruenbaum-82pyc/",
             tags: ["AI", "Philosophy", "Responsibility"]
         }
     ]
 };
 
-// DOM Elements
-const mobileMenu = document.getElementById('mobile-menu');
-const navMenu = document.querySelector('.nav-menu');
-const navLinks = document.querySelectorAll('.nav-link');
-const contactForm = document.getElementById('contact-form');
-
-// Mobile Menu Toggle
-mobileMenu.addEventListener('click', () => {
-    navMenu.classList.toggle('active');
-    mobileMenu.classList.toggle('active');
-});
-
-// Close mobile menu when clicking on a link
-navLinks.forEach(link => {
-    link.addEventListener('click', () => {
-        navMenu.classList.remove('active');
-        mobileMenu.classList.remove('active');
-    });
-});
-
-// Smooth scrolling for navigation links
-navLinks.forEach(link => {
-    link.addEventListener('click', (e) => {
-        e.preventDefault();
-        const targetId = link.getAttribute('href');
-        const targetSection = document.querySelector(targetId);
-        
-        if (targetSection) {
-            const offsetTop = targetSection.offsetTop - 70;
-            window.scrollTo({
-                top: offsetTop,
-                behavior: 'smooth'
-            });
-        }
-    });
-});
-
-// Render Portfolio Projects
-function renderPortfolioProjects() {
-    const fullstackGrid = document.getElementById('fullstack-grid');
-    const datascienceGrid = document.getElementById('datascience-grid');
-    const dataengineeringGrid = document.getElementById('dataengineering-grid');
-
-    // Render Full Stack projects
-    if (fullstackGrid) {
-        fullstackGrid.innerHTML = portfolioData.fullstack.map(project => createProjectCard(project)).join('');
-    }
-
-    // Render Data Science projects
-    if (datascienceGrid) {
-        datascienceGrid.innerHTML = portfolioData.datascience.map(project => createProjectCard(project)).join('');
-    }
-
-    // Render Data Engineering projects
-    if (dataengineeringGrid) {
-        dataengineeringGrid.innerHTML = portfolioData.dataengineering.map(project => createProjectCard(project)).join('');
-    }
-
-    // Render Writings
-    const writingsGrid = document.getElementById('writings-grid');
-    if (writingsGrid) {
-        const validWritings = portfolioData.writings.filter(w => w.title);
-        writingsGrid.innerHTML = validWritings.map(article => createArticleCard(article)).join('');
-    }
-}
-
-// Create Article Card HTML
-function createArticleCard(article) {
-    const tagsHTML = article.tags.length > 0 
-        ? article.tags.map(tag => `<span class="article-tag">${sanitizeHTML(tag)}</span>`).join('') 
+// ---------- Render ----------
+function createProjectCard(p) {
+    const detailLink = p.detailPage
+        ? `<a href="${sanitizeURL(p.detailPage)}" class="portfolio-link detail-link">Details &rarr;</a>`
         : '';
     return `
-        <article class="article-card reveal">
-            <div class="article-content">
-                <div class="article-date">${sanitizeHTML(article.date)}</div>
-                <h3 class="article-title">${sanitizeHTML(article.title)}</h3>
-                <p class="article-excerpt">${sanitizeHTML(article.excerpt)}</p>
-                <div class="article-tags">${tagsHTML}</div>
-                <a href="${sanitizeURL(article.url)}" target="_blank" rel="noopener noreferrer" class="article-link">
-                    <i class="fab fa-linkedin"></i> Read on LinkedIn
+        <article class="portfolio-card reveal">
+            <h3 class="portfolio-title">${sanitizeHTML(p.title)}</h3>
+            <p class="portfolio-description">${sanitizeHTML(p.description)}</p>
+            <div class="portfolio-tech">
+                ${p.technologies.map(t => `<span class="tech-tag">${sanitizeHTML(t)}</span>`).join('')}
+            </div>
+            <div class="portfolio-links">
+                <a href="${sanitizeURL(p.github)}" target="_blank" rel="noopener noreferrer" class="portfolio-link">
+                    <i class="fab fa-github"></i> Code
                 </a>
+                ${detailLink}
             </div>
         </article>
     `;
 }
 
-// Create Project Card HTML
-function createProjectCard(project) {
-    const detailLink = project.detailPage ? `<a href="${sanitizeURL(project.detailPage)}" class="portfolio-link detail-link"><i class="fas fa-info-circle"></i> Details</a>` : '';
+function createArticleCard(a) {
+    const tagsHTML = (a.tags || [])
+        .map(t => `<span class="article-tag">${sanitizeHTML(t)}</span>`)
+        .join('');
     return `
-        <div class="portfolio-card reveal">
-            <a href="${sanitizeURL(project.detailPage || project.github)}" class="portfolio-image-link">
-                <div class="portfolio-image-placeholder">
-                    <span class="placeholder-title">${sanitizeHTML(project.title)}</span>
-                </div>
+        <article class="article-card reveal">
+            <h3 class="article-title">${sanitizeHTML(a.title)}</h3>
+            <p class="article-excerpt">${sanitizeHTML(a.excerpt)}</p>
+            <div class="article-tags">${tagsHTML}</div>
+            <a href="${sanitizeURL(a.url)}" target="_blank" rel="noopener noreferrer" class="article-link">
+                <i class="fab fa-linkedin"></i> Read &rarr;
             </a>
-            <div class="portfolio-content">
-                <h3 class="portfolio-title">${sanitizeHTML(project.title)}</h3>
-                <p class="portfolio-description">${sanitizeHTML(project.description)}</p>
-                <div class="portfolio-tech">
-                    ${project.technologies.map(tech => `<span class="tech-tag">${sanitizeHTML(tech)}</span>`).join('')}
-                </div>
-                <div class="portfolio-links">
-                    <a href="${sanitizeURL(project.github)}" target="_blank" rel="noopener noreferrer" class="portfolio-link">
-                        <i class="fab fa-github"></i> Code
-                    </a>
-                    ${detailLink}
-                </div>
-            </div>
-        </div>
+        </article>
     `;
 }
 
-// Contact Form Handler
-if (contactForm) {
-    contactForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        
-        const formData = new FormData(contactForm);
-        const name = formData.get('name');
-        const email = formData.get('email');
-        const message = formData.get('message');
-        
-        // Here you would typically send the data to a server
-        // For now, we'll just show a success message
-        alert(`Thank you for your message, ${name}! I'll get back to you soon.`);
-        contactForm.reset();
-    });
+function padToFour(html, count) {
+    const remainder = count % 4;
+    if (remainder === 0) return html;
+    const empties = Array(4 - remainder).fill('<div class="portfolio-card empty" aria-hidden="true"></div>').join('');
+    return html + empties;
 }
 
-// Scroll Reveal Animation
-function revealOnScroll() {
-    const reveals = document.querySelectorAll('.reveal');
-    
-    reveals.forEach(element => {
-        const windowHeight = window.innerHeight;
-        const elementTop = element.getBoundingClientRect().top;
-        const elementVisible = 150;
-        
-        if (elementTop < windowHeight - elementVisible) {
-            element.classList.add('active');
-        }
-    });
-}
-
-// Navbar scroll effect
-function navbarScroll() {
-    const navbar = document.querySelector('.navbar');
-    if (window.scrollY > 100) {
-        navbar.style.background = 'rgba(255, 255, 255, 0.98)';
-        navbar.style.boxShadow = '0 4px 6px rgba(0,0,0,0.1)';
-    } else {
-        navbar.style.background = 'rgba(255, 255, 255, 0.95)';
-        navbar.style.boxShadow = '0 2px 4px rgba(0,0,0,0.1)';
+function renderPortfolio() {
+    const map = {
+        'fullstack-grid': portfolioData.fullstack,
+        'datascience-grid': portfolioData.datascience,
+        'dataengineering-grid': portfolioData.dataengineering
+    };
+    for (const [id, list] of Object.entries(map)) {
+        const el = document.getElementById(id);
+        if (el) el.innerHTML = padToFour(list.map(createProjectCard).join(''), list.length);
+    }
+    const writings = document.getElementById('writings-grid');
+    if (writings) {
+        const list = portfolioData.writings.filter(w => w.title);
+        writings.innerHTML = padToFour(list.map(createArticleCard).join(''), list.length);
     }
 }
 
-// Active navigation link highlighting
-function updateActiveNavLink() {
-    const sections = document.querySelectorAll('section');
-    const scrollPosition = window.scrollY + 100;
+// ---------- Navigation ----------
+function initNav() {
+    const toggle = document.getElementById('mobile-menu');
+    const menu = document.querySelector('.nav-menu');
+    const links = document.querySelectorAll('.nav-link');
 
-    sections.forEach(section => {
-        const sectionTop = section.offsetTop;
-        const sectionHeight = section.offsetHeight;
-        const sectionId = section.getAttribute('id');
-        
-        if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
-            navLinks.forEach(link => {
-                link.classList.remove('active');
-                if (link.getAttribute('href') === `#${sectionId}`) {
-                    link.classList.add('active');
-                }
-            });
-        }
+    if (toggle && menu) {
+        toggle.addEventListener('click', () => {
+            menu.classList.toggle('active');
+            toggle.classList.toggle('active');
+        });
+    }
+
+    links.forEach(link => {
+        link.addEventListener('click', () => {
+            if (menu) menu.classList.remove('active');
+            if (toggle) toggle.classList.remove('active');
+        });
     });
+
+    // Active section highlight via IntersectionObserver
+    const sections = document.querySelectorAll('section[id]');
+    if (!sections.length) return;
+    const obs = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const id = entry.target.getAttribute('id');
+                links.forEach(l => {
+                    l.classList.toggle('active', l.getAttribute('href') === `#${id}`);
+                });
+            }
+        });
+    }, { rootMargin: '-40% 0px -55% 0px' });
+    sections.forEach(s => obs.observe(s));
 }
 
-// Initialize everything when DOM is loaded
+// ---------- Reveal on scroll ----------
+function initReveal() {
+    const els = document.querySelectorAll('.reveal');
+    if (!('IntersectionObserver' in window)) {
+        els.forEach(e => e.classList.add('active'));
+        return;
+    }
+    const obs = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('active');
+                obs.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.1 });
+    els.forEach(e => obs.observe(e));
+}
+
+// ---------- Init ----------
 document.addEventListener('DOMContentLoaded', () => {
-    renderPortfolioProjects();
-    revealOnScroll();
-    navbarScroll();
-    updateActiveNavLink();
-});
-
-// Event listeners for scroll
-window.addEventListener('scroll', () => {
-    revealOnScroll();
-    navbarScroll();
-    updateActiveNavLink();
-});
-
-// Add active class styling for navigation
-const style = document.createElement('style');
-style.textContent = `
-    .nav-link.active {
-        color: var(--primary-color) !important;
-    }
-    .nav-link.active::after {
-        width: 100% !important;
-    }
-`;
-document.head.appendChild(style);
-
-// Add typing animation to hero title
-function typeWriter(element, text, speed = 100) {
-    let i = 0;
-    element.innerHTML = '';
-    
-    function type() {
-        if (i < text.length) {
-            element.innerHTML += text.charAt(i);
-            i++;
-            setTimeout(type, speed);
-        }
-    }
-    
-    type();
-}
-
-// Initialize typing animation when page loads
-window.addEventListener('load', () => {
-    const heroTitle = document.querySelector('.hero-title');
-    if (heroTitle) {
-        const originalText = heroTitle.textContent;
-        typeWriter(heroTitle, originalText, 50);
-    }
-});
-
-// Add parallax effect to hero section
-window.addEventListener('scroll', () => {
-    const scrolled = window.pageYOffset;
-    const hero = document.querySelector('.hero');
-    if (hero) {
-        hero.style.transform = `translateY(${scrolled * 0.5}px)`;
-    }
-});
-
-// Add hover effect to portfolio cards
-document.addEventListener('mouseover', (e) => {
-    if (e.target.closest('.portfolio-card')) {
-        const card = e.target.closest('.portfolio-card');
-        card.style.transform = 'translateY(-10px) scale(1.02)';
-    }
-});
-
-document.addEventListener('mouseout', (e) => {
-    if (e.target.closest('.portfolio-card')) {
-        const card = e.target.closest('.portfolio-card');
-        card.style.transform = 'translateY(0) scale(1)';
-    }
+    renderPortfolio();
+    initNav();
+    initReveal();
 });
