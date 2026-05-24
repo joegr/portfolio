@@ -1,13 +1,23 @@
 // Fetch GitHub contributions and set text labels to white
-fetch('https://ghchart.rshah.org/667eea/joegr')
-    .then(res => res.text())
-    .then(svg => {
-        const container = document.getElementById('github-contributions');
-        if (container) {
-            container.innerHTML = svg.replace(/fill:#767676/g, 'fill:#ffffff');
-        }
-    })
-    .catch(() => {});
+(function loadContributions() {
+    const container = document.getElementById('github-contributions');
+    if (!container) return;
+    fetch('https://ghchart.rshah.org/667eea/joegr')
+        .then(function(res) { return res.text(); })
+        .then(function(svg) {
+            var modified = svg.replace(/fill:#767676/g, 'fill:#ffffff');
+            container.innerHTML = modified;
+            var svgEl = container.querySelector('svg');
+            if (svgEl) {
+                svgEl.setAttribute('width', '100%');
+                svgEl.setAttribute('height', 'auto');
+                svgEl.style.display = 'block';
+            }
+        })
+        .catch(function() {
+            container.innerHTML = '<img src="https://ghchart.rshah.org/667eea/joegr" alt="GitHub Contributions" style="width:100%;height:auto;display:block;">';
+        });
+})();
 
 // HTML Sanitization Utility
 function sanitizeHTML(str) {
