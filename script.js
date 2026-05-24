@@ -106,8 +106,8 @@
                 .on('mousemove', function(event) {
                     const rect = container.getBoundingClientRect();
                     tooltip
-                        .style('left', (event.clientX - rect.left + 12) + 'px')
-                        .style('top', (event.clientY - rect.top - 28) + 'px');
+                        .style('left', (event.clientX - rect.left + 10) + 'px')
+                        .style('top', (event.clientY - rect.top + 14) + 'px');
                 })
                 .on('mouseout', function() {
                     tooltip.style('opacity', '0');

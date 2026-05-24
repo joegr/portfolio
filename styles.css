@@ -140,6 +140,7 @@ ul { list-style: none; }
 .github-contributions {
     width: 100%;
     max-width: 900px;
+    position: relative; /* anchor for absolute-positioned d3 tooltip */
 }
 
 /* Sections */
@@ -169,11 +170,13 @@ ul { list-style: none; }
 
 .section-header p { display: none; }
 
-/* Portfolio grid — fixed 4 columns of square cards */
+/* Portfolio grid — fixed 4 columns. Cards default to square but grow if
+   content needs the room; grid rows stretch so neighbors stay aligned. */
 .portfolio-grid,
 .writings-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
+    grid-auto-rows: 1fr;
     gap: 1px;
     background: var(--border);
     border: 1px solid var(--border);
@@ -187,7 +190,7 @@ ul { list-style: none; }
     flex-direction: column;
     gap: 0.875rem;
     aspect-ratio: 1 / 1;
-    overflow: hidden;
+    height: auto;
     position: relative;
     transition: background 0.15s ease, color 0.15s ease;
 }
