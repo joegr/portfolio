@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src https://fonts.gstatic.com https://cdnjs.cloudflare.com; img-src 'self' data: https:; connect-src 'self' https://api.github.com https://raw.githubusercontent.com;">
+    <title>Blog | Joe Gruenbaum</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="blog.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="index.html"><h2>Joe Gruenbaum</h2></a>
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item"><a href="index.html#fullstack" class="nav-link">Full Stack</a></li>
+                <li class="nav-item"><a href="index.html#datascience" class="nav-link">Data Science</a></li>
+                <li class="nav-item"><a href="index.html#dataengineering" class="nav-link">Data Engineering</a></li>
+                <li class="nav-item"><a href="index.html#writings" class="nav-link">Writings</a></li>
+                <li class="nav-item"><a href="blog.html" class="nav-link active">Blog</a></li>
+                <li class="nav-item"><a href="index.html#contact" class="nav-link">Contact</a></li>
+            </ul>
+            <div class="nav-toggle" id="mobile-menu">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+    </nav>
+
+    <main class="blog">
+        <div class="container">
+            <!-- Index view: list of posts -->
+            <section id="blog-index" class="blog-index">
+                <header class="blog-header">
+                    <h1 class="blog-title">Blog</h1>
+                    <p class="blog-subtitle">Notes, in progress. Pulled live from <a href="https://github.com/joegr/blogg" target="_blank" rel="noopener noreferrer">github.com/joegr/blogg</a>.</p>
+                </header>
+
+                <div id="blog-status" class="blog-status">Loading posts&hellip;</div>
+                <div id="blog-grid" class="portfolio-grid blog-grid" hidden></div>
+            </section>
+
+            <!-- Post view: rendered markdown -->
+            <article id="blog-post" class="blog-post" hidden>
+                <a href="blog.html" id="blog-back" class="back-link"><i class="fas fa-arrow-left"></i> All posts</a>
+                <div id="blog-post-meta" class="blog-post-meta"></div>
+                <h1 id="blog-post-title" class="blog-post-title"></h1>
+                <div id="blog-post-content" class="blog-post-content"></div>
+            </article>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>2025 Portfolio. Built by Joe Gruenbaum with HTML, CSS &amp; plain ol' JavaScript and D3.js</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dompurify@3/dist/purify.min.js"></script>
+    <script src="blog.js"></script>
+</body>
+</html>

@@ -1,136 +1,199 @@
-/* Project Detail Page Styles */
+/* Project Detail — inherits all tokens from ../styles.css
+   (--accent, --accent-dark, --accent-soft, --accent-tint, --accent-border,
+    --bg, --bg-alt, --fg, --muted, --border, --mono, --sans) */
 
 .project-detail {
-    max-width: 1200px;
+    max-width: 1080px;
     margin: 0 auto;
-    padding: 120px 2rem 4rem;
+    padding: 120px 24px 96px;
 }
 
+/* ---------- Header ---------- */
 .project-header {
-    margin-bottom: 3rem;
+    margin-bottom: 4rem;
+    padding-bottom: 2.5rem;
+    border-bottom: 1px solid var(--border);
 }
 
 .back-link {
     display: inline-flex;
     align-items: center;
-    gap: 0.5rem;
-    color: var(--primary-color);
-    text-decoration: none;
-    margin-bottom: 1.5rem;
-    font-weight: 500;
-    transition: color 0.3s ease;
+    gap: 0.4rem;
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    margin-bottom: 2rem;
+    transition: color 0.15s ease;
 }
 
-.back-link:hover {
-    color: var(--secondary-color);
-}
+.back-link:hover { color: var(--accent); }
 
 .project-header h1 {
-    font-size: 2.5rem;
-    margin-bottom: 1rem;
-    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    font-size: clamp(2rem, 4.5vw, 3rem);
+    font-weight: 600;
+    letter-spacing: -0.025em;
+    line-height: 1.1;
+    margin-bottom: 1.5rem;
+    color: var(--fg);
+}
+
+.project-header h1::after {
+    content: '.';
+    color: var(--accent);
 }
 
 .project-meta {
     display: flex;
     align-items: center;
-    gap: 1.5rem;
+    gap: 0.75rem;
     flex-wrap: wrap;
 }
 
+/* Category badge — same soft pill aesthetic as tags */
 .category-badge {
-    padding: 0.5rem 1rem;
-    border-radius: 20px;
-    font-size: 0.875rem;
-    font-weight: 600;
-    text-transform: uppercase;
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    font-weight: 500;
+    text-transform: lowercase;
+    letter-spacing: 0;
+    padding: 0.3rem 0.75rem;
+    border-radius: 999px;
+    color: var(--accent);
+    background: var(--accent-tint);
+    border: 1px solid var(--accent-border);
 }
 
-.category-badge.fullstack {
-    background: linear-gradient(135deg, #667eea, #764ba2);
-    color: white;
-}
-
-.category-badge.datascience {
-    background: linear-gradient(135deg, #f093fb, #f5576c);
-    color: white;
-}
-
+.category-badge.fullstack,
+.category-badge.datascience,
 .category-badge.dataengineering {
-    background: linear-gradient(135deg, #4facfe, #00f2fe);
-    color: white;
+    background: var(--accent-tint);
+    color: var(--accent);
 }
 
+/* GitHub link — outlined rust pill, fills on hover (matches index buttons) */
 .github-link {
     display: inline-flex;
     align-items: center;
-    gap: 0.5rem;
-    color: var(--text-color);
-    text-decoration: none;
-    padding: 0.5rem 1rem;
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    transition: all 0.3s ease;
+    gap: 0.4rem;
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--accent);
+    background: var(--bg);
+    border: 1px solid var(--accent);
+    padding: 0.35rem 0.7rem;
+    border-radius: 2px;
+    transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
 }
 
 .github-link:hover {
-    background: var(--primary-color);
-    color: white;
-    border-color: var(--primary-color);
+    background: var(--accent);
+    color: #ffffff;
+    border-color: var(--accent);
 }
 
-/* Screenshots Section */
-.project-screenshots {
-    margin-bottom: 3rem;
-}
-
+/* ---------- Section headings ---------- */
 .project-screenshots h2,
 .project-overview h2,
 .project-tech h2,
 .project-features h2,
 .project-details h2 {
-    font-size: 1.5rem;
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--accent);
     margin-bottom: 1.5rem;
-    color: var(--text-color);
-    position: relative;
-    padding-bottom: 0.5rem;
+    padding: 0;
 }
 
+.project-screenshots h2::before,
+.project-overview h2::before,
+.project-tech h2::before,
+.project-features h2::before,
+.project-details h2::before {
+    content: '—— ';
+    opacity: 0.6;
+}
+
+/* Disable any decorative ::after underlines from old design */
 .project-screenshots h2::after,
 .project-overview h2::after,
 .project-tech h2::after,
 .project-features h2::after,
-.project-details h2::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 60px;
-    height: 3px;
-    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-    border-radius: 2px;
+.project-details h2::after { content: none; display: none; }
+
+/* ---------- Sections (flat, no boxed cards) ---------- */
+.project-screenshots,
+.project-overview,
+.project-tech,
+.project-features,
+.project-details {
+    margin-bottom: 4rem;
+    padding: 0;
+    background: none;
+    border: none;
+    box-shadow: none;
+    border-radius: 0;
 }
 
+.project-overview p,
+.project-details p {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: var(--fg);
+    max-width: 70ch;
+}
+
+.placeholder-text {
+    font-family: var(--mono);
+    font-size: 0.8rem;
+    color: var(--muted);
+}
+
+/* ---------- Screenshots ---------- */
 .screenshot-gallery {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 1.5rem;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
 }
 
 .screenshot-item {
-    border-radius: 12px;
+    background: var(--bg-alt);
     overflow: hidden;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
     cursor: pointer;
+    border-radius: 0;
+    box-shadow: none;
+    transition: background 0.15s ease;
+    position: relative;
 }
 
+.screenshot-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--accent);
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform 0.25s ease;
+    z-index: 1;
+}
+
+.screenshot-item:hover::before { transform: scaleX(1); }
+
 .screenshot-item:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+    background: var(--bg);
+    transform: none;
+    box-shadow: none;
 }
 
 .screenshot-item img {
@@ -139,93 +202,64 @@
     display: block;
 }
 
-/* Content Sections */
-.project-overview,
-.project-tech,
-.project-features,
-.project-details {
-    margin-bottom: 3rem;
-    padding: 2rem;
-    background: var(--card-bg);
-    border-radius: 12px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-}
-
-.project-overview p,
-.project-details p {
-    line-height: 1.8;
-    color: var(--text-secondary);
-}
-
-/* Tech Tags */
+/* ---------- Tech tags — soft pill (kept aesthetic, recolored rust) ---------- */
 .tech-tags {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.75rem;
+    gap: 0.5rem;
 }
 
-.tech-tag {
-    padding: 0.5rem 1rem;
-    background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
-    color: var(--primary-color);
-    border-radius: 20px;
-    font-size: 0.875rem;
+.project-tech .tech-tag {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    color: var(--accent);
+    background: var(--accent-tint);
+    border: 1px solid var(--accent-border);
+    padding: 0.35rem 0.85rem;
+    border-radius: 999px;
     font-weight: 500;
-    border: 1px solid rgba(102, 126, 234, 0.2);
+    text-transform: lowercase;
+    letter-spacing: 0;
+    transition: background 0.15s ease, border-color 0.15s ease;
 }
 
-/* Features List */
+.project-tech .tech-tag:hover {
+    background: var(--accent-soft);
+    border-color: var(--accent);
+}
+
+/* ---------- Features list ---------- */
 .project-features ul {
     list-style: none;
     padding: 0;
+    max-width: 70ch;
+    border-top: 1px solid var(--border);
 }
 
 .project-features li {
     position: relative;
-    padding-left: 2rem;
-    margin-bottom: 1rem;
-    line-height: 1.6;
-    color: var(--text-secondary);
+    padding: 0.85rem 0 0.85rem 1.75rem;
+    line-height: 1.55;
+    color: var(--fg);
+    border-bottom: 1px solid var(--border);
+    font-size: 0.95rem;
 }
 
 .project-features li::before {
-    content: '✓';
+    content: '→';
     position: absolute;
     left: 0;
-    color: var(--primary-color);
-    font-weight: bold;
+    top: 0.85rem;
+    color: var(--accent);
+    font-family: var(--mono);
+    font-weight: 500;
 }
 
-/* Responsive */
-@media (max-width: 768px) {
-    .project-detail {
-        padding: 100px 1rem 2rem;
-    }
-
-    .project-header h1 {
-        font-size: 1.75rem;
-    }
-
-    .screenshot-gallery {
-        grid-template-columns: 1fr;
-    }
-
-    .project-overview,
-    .project-tech,
-    .project-features,
-    .project-details {
-        padding: 1.5rem;
-    }
-}
-
-/* Lightbox for screenshots */
+/* ---------- Lightbox ---------- */
 .lightbox {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.9);
+    inset: 0;
+    background: rgba(10, 10, 10, 0.92);
     display: none;
     justify-content: center;
     align-items: center;
@@ -233,21 +267,31 @@
     cursor: pointer;
 }
 
-.lightbox.active {
-    display: flex;
-}
+.lightbox.active { display: flex; }
 
 .lightbox img {
     max-width: 90%;
     max-height: 90%;
-    border-radius: 8px;
+    border-radius: 0;
 }
 
 .lightbox-close {
     position: absolute;
-    top: 20px;
-    right: 30px;
+    top: 24px;
+    right: 32px;
     color: white;
-    font-size: 2rem;
+    font-family: var(--mono);
+    font-size: 1.25rem;
     cursor: pointer;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 768px) {
+    .project-detail {
+        padding: 96px 20px 64px;
+    }
+
+    .screenshot-gallery {
+        grid-template-columns: 1fr;
+    }
 }

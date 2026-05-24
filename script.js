@@ -245,7 +245,6 @@ function createProjectCard(p) {
     return `
         <article class="portfolio-card reveal">
             <h3 class="portfolio-title">${sanitizeHTML(p.title)}</h3>
-            <p class="portfolio-description">${sanitizeHTML(p.description)}</p>
             <div class="portfolio-tech">
                 ${p.technologies.map(t => `<span class="tech-tag">${sanitizeHTML(t)}</span>`).join('')}
             </div>
@@ -266,11 +265,12 @@ function createArticleCard(a) {
     return `
         <article class="article-card reveal">
             <h3 class="article-title">${sanitizeHTML(a.title)}</h3>
-            <p class="article-excerpt">${sanitizeHTML(a.excerpt)}</p>
             <div class="article-tags">${tagsHTML}</div>
-            <a href="${sanitizeURL(a.url)}" target="_blank" rel="noopener noreferrer" class="article-link">
-                <i class="fab fa-linkedin"></i> Read &rarr;
-            </a>
+            <div class="portfolio-links">
+                <a href="${sanitizeURL(a.url)}" target="_blank" rel="noopener noreferrer" class="article-link portfolio-link">
+                    <i class="fab fa-linkedin"></i> Read &rarr;
+                </a>
+            </div>
         </article>
     `;
 }
