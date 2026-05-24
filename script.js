@@ -1,21 +1,116 @@
-// Fetch GitHub contributions and set text labels to white
-(function loadContributions() {
+// D3.js GitHub Contributions Heatmap
+(function renderContributions() {
     const container = document.getElementById('github-contributions');
-    if (!container) return;
-    fetch('https://ghchart.rshah.org/667eea/joegr')
-        .then(function(res) { return res.text(); })
-        .then(function(svg) {
-            var modified = svg.replace(/fill:#767676/g, 'fill:#ffffff');
-            container.innerHTML = modified;
-            var svgEl = container.querySelector('svg');
-            if (svgEl) {
-                svgEl.setAttribute('width', '100%');
-                svgEl.setAttribute('height', 'auto');
-                svgEl.style.display = 'block';
-            }
+    if (!container || typeof d3 === 'undefined') return;
+
+    fetch('contributions.json')
+        .then(function(res) { return res.json(); })
+        .then(function(data) {
+            var contributions = data.contributions;
+            if (!contributions || !contributions.length) return;
+
+            var cellSize = 11;
+            var cellPadding = 2;
+            var totalSize = cellSize + cellPadding;
+            var weeks = Math.ceil(contributions.length / 7);
+            var width = weeks * totalSize + 40;
+            var height = 7 * totalSize + 30;
+
+            var colors = ['rgba(255,255,255,0)', 'rgba(255,255,255,0.25)', 'rgba(255,255,255,0.5)', 'rgba(255,255,255,0.75)', 'rgba(255,255,255,1)'];
+
+            var svg = d3.select(container)
+                .append('svg')
+                .attr('viewBox', '0 0 ' + width + ' ' + height)
+                .attr('preserveAspectRatio', 'xMidYMid meet')
+                .style('width', '100%')
+                .style('height', 'auto')
+                .style('display', 'block');
+
+            // Day labels
+            var days = ['Mon', 'Wed', 'Fri'];
+            var dayPositions = [1, 3, 5];
+            svg.selectAll('.day-label')
+                .data(days)
+                .enter()
+                .append('text')
+                .attr('x', 0)
+                .attr('y', function(d, i) { return dayPositions[i] * totalSize + 24 + cellSize / 2; })
+                .attr('fill', 'rgba(255,255,255,0.7)')
+                .attr('font-size', '9px')
+                .attr('font-family', 'Inter, sans-serif')
+                .attr('dominant-baseline', 'middle')
+                .text(function(d) { return d; });
+
+            // Month labels
+            var months = [];
+            contributions.forEach(function(c, i) {
+                var date = new Date(c.date);
+                if (date.getDate() <= 7 && date.getDay() === 0) {
+                    months.push({ name: date.toLocaleString('en', { month: 'short' }), week: Math.floor(i / 7) });
+                }
+            });
+            svg.selectAll('.month-label')
+                .data(months)
+                .enter()
+                .append('text')
+                .attr('x', function(d) { return d.week * totalSize + 40; })
+                .attr('y', 12)
+                .attr('fill', 'rgba(255,255,255,0.7)')
+                .attr('font-size', '9px')
+                .attr('font-family', 'Inter, sans-serif')
+                .text(function(d) { return d.name; });
+
+            // Tooltip
+            var tooltip = d3.select(container)
+                .append('div')
+                .style('position', 'absolute')
+                .style('background', 'rgba(0,0,0,0.85)')
+                .style('color', '#fff')
+                .style('padding', '6px 10px')
+                .style('border-radius', '6px')
+                .style('font-size', '12px')
+                .style('font-family', 'Inter, sans-serif')
+                .style('pointer-events', 'none')
+                .style('opacity', '0')
+                .style('transition', 'opacity 0.15s')
+                .style('white-space', 'nowrap')
+                .style('z-index', '10');
+
+            // Cells
+            svg.selectAll('.contrib-cell')
+                .data(contributions)
+                .enter()
+                .append('rect')
+                .attr('class', 'contrib-cell')
+                .attr('x', function(d, i) { return Math.floor(i / 7) * totalSize + 40; })
+                .attr('y', function(d, i) { return (i % 7) * totalSize + 20; })
+                .attr('width', cellSize)
+                .attr('height', cellSize)
+                .attr('rx', 2)
+                .attr('ry', 2)
+                .attr('fill', function(d) { return colors[d.level] || colors[0]; })
+                .style('cursor', 'pointer')
+                .on('mouseover', function(event, d) {
+                    var count = d.count;
+                    var dateStr = new Date(d.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+                    var label = count === 0 ? 'No contributions' : count + ' contribution' + (count > 1 ? 's' : '');
+                    tooltip.html('<strong>' + label + '</strong> on ' + dateStr)
+                        .style('opacity', '1');
+                    d3.select(this).attr('stroke', '#fff').attr('stroke-width', '1.5');
+                })
+                .on('mousemove', function(event) {
+                    var rect = container.getBoundingClientRect();
+                    tooltip
+                        .style('left', (event.clientX - rect.left + 12) + 'px')
+                        .style('top', (event.clientY - rect.top - 30) + 'px');
+                })
+                .on('mouseout', function() {
+                    tooltip.style('opacity', '0');
+                    d3.select(this).attr('stroke', 'none');
+                });
         })
-        .catch(function() {
-            container.innerHTML = '<img src="https://ghchart.rshah.org/667eea/joegr" alt="GitHub Contributions" style="width:100%;height:auto;display:block;">';
+        .catch(function(err) {
+            console.error('Failed to load contributions:', err);
         });
 })();
 

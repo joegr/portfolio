@@ -1,0 +1,27 @@
+name: Update Contributions Data
+
+on:
+  schedule:
+    - cron: '0 6 * * *'  # Daily at 6 AM UTC
+  workflow_dispatch:  # Allow manual trigger
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Fetch contributions data
+        run: |
+          curl -s "https://github-contributions-api.jogruber.de/v4/joegr?y=last" \
+            -o contributions.json
+
+      - name: Commit if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add contributions.json
+          git diff --cached --quiet || git commit -m "chore: update contributions data"
+          git push
