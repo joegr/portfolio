@@ -1,18 +1,13 @@
-// Load GitHub contributions chart as inline SVG so we can style text labels
-(function() {
-    fetch('https://ghchart.rshah.org/667eea/joegr')
-        .then(res => res.text())
-        .then(svg => {
-            const container = document.getElementById('github-contributions');
-            if (container) {
-                container.innerHTML = svg;
-                container.querySelectorAll('text').forEach(el => {
-                    el.setAttribute('fill', '#ffffff');
-                });
-            }
-        })
-        .catch(() => {});
-})();
+// Fetch GitHub contributions and set text labels to white
+fetch('https://ghchart.rshah.org/667eea/joegr')
+    .then(res => res.text())
+    .then(svg => {
+        const container = document.getElementById('github-contributions');
+        if (container) {
+            container.innerHTML = svg.replace(/fill:#767676/g, 'fill:#ffffff');
+        }
+    })
+    .catch(() => {});
 
 // HTML Sanitization Utility
 function sanitizeHTML(str) {
