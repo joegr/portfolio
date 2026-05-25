@@ -1,0 +1,16 @@
+# Repos to include in the gource atlas.
+# One per line in `owner/name` format. Lines beginning with # are ignored.
+# Public repos are cloned anonymously. For private repos, set the
+# GOURCE_PAT secret in repo settings and uncomment the auth line in the
+# workflow (`.github/workflows/update-gource.yml`).
+
+joegr/futwm
+joegr/fold
+joegr/owl
+joegr/poo
+joegr/elo-garden
+joegr/ipaba
+joegr/native-sparse-attention
+joegr/forge
+joegr/span
+joegr/blogg

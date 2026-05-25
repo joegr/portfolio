@@ -1,0 +1,269 @@
+/* Repo Atlas — full-bleed visualization with HUD overlays */
+
+.gource-body {
+    overflow: hidden;
+    background: #fafafa;
+}
+
+.atlas {
+    position: fixed;
+    inset: 56px 0 0 0; /* below the navbar */
+    overflow: hidden;
+}
+
+#atlas-canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    cursor: grab;
+}
+#atlas-canvas:active { cursor: grabbing; }
+
+/* ---------- Loading / empty state ---------- */
+.atlas-status {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    max-width: 480px;
+    padding: 1.5rem 2rem;
+    border: 1px solid var(--border);
+    background: var(--bg);
+    font-family: var(--mono);
+    font-size: 0.85rem;
+    line-height: 1.6;
+    color: var(--fg);
+    text-align: center;
+    z-index: 5;
+}
+.atlas-status code {
+    color: var(--accent);
+    background: var(--accent-tint);
+    padding: 0.1em 0.4em;
+    border-radius: 3px;
+    font-size: 0.95em;
+}
+.atlas-status small {
+    color: var(--muted);
+    font-size: 0.75rem;
+}
+
+/* ---------- HUD: top-left title + stats ---------- */
+.atlas-hud {
+    position: absolute;
+    top: 24px;
+    left: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    pointer-events: none;
+    z-index: 4;
+}
+
+.atlas-hud-title {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.atlas-label {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    color: var(--accent);
+    text-transform: uppercase;
+}
+
+.atlas-hud-title h1 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    letter-spacing: -0.015em;
+    color: var(--fg);
+}
+
+.atlas-hud-stats {
+    display: flex;
+    gap: 1.5rem;
+}
+.atlas-hud-stats > div {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    min-width: 80px;
+}
+.atlas-stat-label {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+}
+.atlas-hud-stats span:last-child {
+    font-family: var(--mono);
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--fg);
+}
+
+/* ---------- Legend (right edge) ---------- */
+.atlas-legend {
+    position: absolute;
+    top: 24px;
+    right: 24px;
+    bottom: 110px;
+    width: 240px;
+    overflow-y: auto;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(8px);
+    border: 1px solid var(--border);
+    padding: 0.5rem;
+    z-index: 4;
+    font-family: var(--mono);
+}
+
+.legend-row {
+    --repo-color: #c2410c;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    width: 100%;
+    padding: 0.45rem 0.6rem;
+    background: none;
+    border: none;
+    border-radius: 2px;
+    cursor: pointer;
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    color: var(--fg);
+    text-align: left;
+    transition: background 0.12s ease;
+}
+
+.legend-row:hover { background: var(--bg-alt); }
+
+.legend-row.focused {
+    background: var(--accent-tint);
+}
+.legend-row.focused .legend-name {
+    color: var(--accent);
+    font-weight: 600;
+}
+
+.legend-row.dimmed {
+    opacity: 0.35;
+}
+
+.legend-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--repo-color);
+    flex-shrink: 0;
+}
+
+.legend-name {
+    flex: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.legend-count {
+    color: var(--muted);
+    font-size: 0.7rem;
+}
+
+/* ---------- Bottom controls ---------- */
+.atlas-controls {
+    position: absolute;
+    bottom: 24px;
+    left: 24px;
+    right: 24px;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(8px);
+    border: 1px solid var(--border);
+    z-index: 4;
+}
+
+.atlas-btn {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--accent);
+    background: var(--bg);
+    border: 1px solid var(--accent);
+    padding: 0.45rem 0.7rem;
+    border-radius: 2px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    transition: background 0.15s ease, color 0.15s ease;
+    min-width: 38px;
+    justify-content: center;
+}
+
+.atlas-btn:hover {
+    background: var(--accent);
+    color: #ffffff;
+}
+
+.atlas-btn-toggle.active {
+    background: var(--accent);
+    color: #ffffff;
+}
+
+.atlas-seek {
+    flex: 1;
+    accent-color: var(--accent);
+    height: 4px;
+}
+
+.atlas-select {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    color: var(--fg);
+    background: var(--bg);
+    border: 1px solid var(--border);
+    padding: 0.45rem 0.6rem;
+    border-radius: 2px;
+    cursor: pointer;
+}
+
+.atlas-select:focus {
+    outline: none;
+    border-color: var(--accent);
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 768px) {
+    .atlas-legend {
+        position: absolute;
+        top: auto;
+        bottom: 90px;
+        right: 12px;
+        left: 12px;
+        width: auto;
+        max-height: 160px;
+    }
+    .atlas-hud {
+        top: 12px;
+        left: 12px;
+        gap: 0.75rem;
+    }
+    .atlas-hud-stats { gap: 0.75rem; }
+    .atlas-controls {
+        left: 12px;
+        right: 12px;
+        bottom: 12px;
+        flex-wrap: wrap;
+    }
+    .atlas-seek { order: 10; flex-basis: 100%; }
+}

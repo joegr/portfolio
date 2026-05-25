@@ -1,0 +1,83 @@
+name: Update Gource Atlas
+
+on:
+  schedule:
+    - cron: '0 7 * * *'   # Daily at 07:00 UTC
+  workflow_dispatch:       # Manual trigger from the Actions tab
+  push:
+    paths:
+      - 'gource/repos.txt'
+      - 'gource/build-log.sh'
+      - 'gource/log-to-json.py'
+      - '.github/workflows/update-gource.yml'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install gource
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gource xvfb
+
+      - name: Cache cloned repos
+        uses: actions/cache@v4
+        with:
+          path: /tmp/repos
+          key: gource-repos-${{ hashFiles('gource/repos.txt') }}-${{ github.run_id }}
+          restore-keys: |
+            gource-repos-${{ hashFiles('gource/repos.txt') }}-
+            gource-repos-
+
+      - name: Clone or refresh tracked repos
+        env:
+          # Uncomment and add GOURCE_PAT to repo secrets to access private repos.
+          # GOURCE_PAT: ${{ secrets.GOURCE_PAT }}
+          DUMMY: ""
+        run: |
+          mkdir -p /tmp/repos
+          while IFS= read -r line || [ -n "$line" ]; do
+            # Skip blank lines and comments
+            trimmed="$(echo "$line" | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')"
+            [ -z "$trimmed" ] && continue
+            case "$trimmed" in \#*) continue ;; esac
+
+            name="$(basename "$trimmed")"
+            url="https://github.com/$trimmed.git"
+            # If a token is configured, embed it for private clones.
+            if [ -n "${GOURCE_PAT:-}" ]; then
+              url="https://x-access-token:${GOURCE_PAT}@github.com/$trimmed.git"
+            fi
+
+            if [ -d "/tmp/repos/$name/.git" ]; then
+              echo "Updating $trimmed"
+              (cd "/tmp/repos/$name" && git fetch --quiet --all --prune \
+                && git reset --quiet --hard "$(git symbolic-ref --short refs/remotes/origin/HEAD | sed 's|^origin/||')") \
+                || echo "  (fetch failed for $trimmed; keeping cached copy)"
+            else
+              echo "Cloning $trimmed"
+              git clone --quiet "$url" "/tmp/repos/$name" \
+                || echo "  (clone failed for $trimmed; skipping)"
+            fi
+          done < gource/repos.txt
+
+      - name: Build gource.json
+        # xvfb-run guards against gource trying to open a display, even though
+        # --output-custom-log shouldn't need one.
+        run: xvfb-run -a bash gource/build-log.sh /tmp/repos
+
+      - name: Commit if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add gource/gource.json
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+          else
+            git commit -m "chore: update gource atlas data"
+            git push
+          fi

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://d3js.org; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src https://fonts.gstatic.com https://cdnjs.cloudflare.com; img-src 'self' data:; connect-src 'self';">
+    <title>Repo Atlas | Joe Gruenbaum</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="gource.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+</head>
+<body class="gource-body">
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="index.html"><h2>Joe Gruenbaum</h2></a>
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item"><a href="index.html#fullstack" class="nav-link">Full Stack</a></li>
+                <li class="nav-item"><a href="index.html#datascience" class="nav-link">Data Science</a></li>
+                <li class="nav-item"><a href="index.html#dataengineering" class="nav-link">Data Engineering</a></li>
+                <li class="nav-item"><a href="index.html#writings" class="nav-link">Writings</a></li>
+                <li class="nav-item"><a href="blog.html" class="nav-link">Blog</a></li>
+                <li class="nav-item"><a href="gource.html" class="nav-link active">Atlas</a></li>
+                <li class="nav-item"><a href="index.html#contact" class="nav-link">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="atlas">
+        <canvas id="atlas-canvas"></canvas>
+
+        <div id="atlas-status" class="atlas-status">Loading <code>gource/gource.json</code>&hellip;</div>
+
+        <!-- Overlay HUD -->
+        <header class="atlas-hud">
+            <div class="atlas-hud-title">
+                <span class="atlas-label">REPO ATLAS</span>
+                <h1 id="atlas-current-date">—</h1>
+            </div>
+            <div class="atlas-hud-stats">
+                <div><span class="atlas-stat-label">events</span><span id="stat-events">0</span></div>
+                <div><span class="atlas-stat-label">files</span><span id="stat-files">0</span></div>
+                <div><span class="atlas-stat-label">focus</span><span id="stat-focus">—</span></div>
+            </div>
+        </header>
+
+        <!-- Legend / repo filter -->
+        <aside class="atlas-legend" id="atlas-legend"></aside>
+
+        <!-- Controls -->
+        <div class="atlas-controls">
+            <button id="btn-play" class="atlas-btn" aria-label="Play/Pause">
+                <i class="fas fa-play"></i>
+            </button>
+            <button id="btn-reset" class="atlas-btn" aria-label="Reset">
+                <i class="fas fa-rotate-left"></i>
+            </button>
+            <button id="btn-overview" class="atlas-btn atlas-btn-toggle" aria-label="Toggle overview">
+                <i class="fas fa-globe"></i> Overview
+            </button>
+            <input type="range" id="seek" class="atlas-seek" min="0" max="1000" value="0">
+            <select id="speed" class="atlas-select" aria-label="Speed">
+                <option value="0.25">0.25&times;</option>
+                <option value="1" selected>1&times;</option>
+                <option value="4">4&times;</option>
+                <option value="16">16&times;</option>
+                <option value="64">64&times;</option>
+            </select>
+        </div>
+    </main>
+
+    <script src="gource.js"></script>
+</body>
+</html>
