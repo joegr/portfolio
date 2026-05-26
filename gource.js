@@ -26,7 +26,15 @@ const SIM_SECONDS_PER_REAL_SECOND = 86400; // 1 day per second
 const FILE_RADIUS = 2.2;
 const FILE_RADIUS_FLASH = 6;
 const FLASH_DECAY = 0.06;
-const REPO_RADIUS = 14;
+
+// Repo radius grows with cumulative LOC delivered by the cursor.
+// r = clamp(BASE + sqrt(loc) * SCALE, BASE, MAX)
+const REPO_RADIUS_BASE = 12;
+const REPO_RADIUS_MAX = 90;
+const REPO_LOC_SCALE = 0.08;
+const REPO_RADIUS_EASE = 0.08;
+// Legacy alias used by a few render constants below
+const REPO_RADIUS = REPO_RADIUS_BASE;
 const CAMERA_EASE = 0.08;
 const CAMERA_ZOOM_OVERVIEW = 1;
 const REPO_ATTRACTION = 0.06;
@@ -143,11 +151,15 @@ function buildRepos() {
         return {
             name: r.name,
             count: r.count,
+            totalCommits: r.count,
+            totalLocFinal: r.loc || 0,  // for legend display
             color: REPO_COLORS[i % REPO_COLORS.length],
             x, y,
             fx: x, fy: y, // pin in place
             isRepo: true,
-            r: REPO_RADIUS,
+            r: REPO_RADIUS_BASE,
+            targetR: REPO_RADIUS_BASE,
+            totalLoc: 0,                // grows during playback
             flash: 0,
         };
     });
@@ -161,7 +173,7 @@ function buildLegend() {
         <button class="legend-row" data-repo="${r.name}" style="--repo-color:${r.color}">
             <span class="legend-dot"></span>
             <span class="legend-name">${escapeHTML(r.name)}</span>
-            <span class="legend-count">${r.count.toLocaleString()}</span>
+            <span class="legend-count" data-repo-loc="${r.name}">0</span>
         </button>
     `).join('');
 
@@ -195,6 +207,7 @@ function buildSimulation() {
         .alphaDecay(0.01)
         .velocityDecay(0.35)
         .force('charge', d3.forceManyBody().strength(d => d.isRepo ? -200 : -4))
+        // Collision uses live radius so file nodes are pushed outward as repos grow.
         .force('collide', d3.forceCollide(d => (d.isRepo ? d.r + 4 : FILE_RADIUS + 0.5)))
         .force('x', d3.forceX(d => {
             const r = state.repoIndex.get(d.repo);
@@ -228,6 +241,20 @@ function applyEvent(e) {
 
     repo.flash = Math.min(1, repo.flash + 0.4);
     repo.recentTouch = state.currentTime;
+
+    // The signal: cursor delivers LOC, repo grows. Deletes count toward the
+    // signal too (work was done) but at half weight so net additions dominate.
+    const loc = e.l || 0;
+    if (loc > 0) {
+        const weight = e.a === 'D' ? 0.5 : 1;
+        repo.totalLoc += loc * weight;
+        repo.targetR = Math.min(
+            REPO_RADIUS_MAX,
+            REPO_RADIUS_BASE + Math.sqrt(repo.totalLoc) * REPO_LOC_SCALE
+        );
+        // Re-kick the simulation so file nodes spread out as the host grows.
+        if (state.simulation) state.simulation.alpha(0.15).restart();
+    }
 
     // Cursor flies to the active repo — camera stays where it is.
     state.focusRepo = e.r;
@@ -300,7 +327,11 @@ function frame(now) {
             }
         }
     }
-    state.repos.forEach(r => { if (r.flash > 0) r.flash = Math.max(0, r.flash - FLASH_DECAY * 0.7); });
+    // Ease repo radii toward their targets and decay flashes.
+    state.repos.forEach(r => {
+        r.r += (r.targetR - r.r) * REPO_RADIUS_EASE;
+        if (r.flash > 0) r.flash = Math.max(0, r.flash - FLASH_DECAY * 0.7);
+    });
 
     render();
     requestAnimationFrame(frame);
@@ -339,11 +370,11 @@ function render() {
     ctx.scale(camera.k, camera.k);
     ctx.translate(-camera.x, -camera.y);
 
-    // Repo halos
+    // Repo halos — sized to current radius
     state.repos.forEach(r => {
         if (!state.activeRepos.has(r.name)) return;
-        const halo = REPO_RADIUS + 30 + r.flash * 40;
-        const grad = ctx.createRadialGradient(r.x, r.y, REPO_RADIUS, r.x, r.y, halo);
+        const halo = r.r + 30 + r.flash * 40;
+        const grad = ctx.createRadialGradient(r.x, r.y, r.r, r.x, r.y, halo);
         grad.addColorStop(0, hexToRgba(r.color, 0.18 + r.flash * 0.25));
         grad.addColorStop(1, hexToRgba(r.color, 0));
         ctx.fillStyle = grad;
@@ -391,10 +422,10 @@ function render() {
         if (!state.activeRepos.has(r.name)) {
             ctx.globalAlpha = 0.25;
         }
-        // Anchor dot
+        // Anchor disc
         ctx.fillStyle = r.color;
         ctx.beginPath();
-        ctx.arc(r.x, r.y, REPO_RADIUS, 0, Math.PI * 2);
+        ctx.arc(r.x, r.y, r.r, 0, Math.PI * 2);
         ctx.fill();
         // Inner ring
         ctx.strokeStyle = '#ffffff';
@@ -402,7 +433,7 @@ function render() {
         ctx.stroke();
         // Label
         ctx.fillStyle = '#0a0a0a';
-        ctx.fillText(r.name, r.x, r.y + REPO_RADIUS + 12);
+        ctx.fillText(r.name, r.x, r.y + r.r + 12);
         ctx.globalAlpha = 1;
     });
 
@@ -427,8 +458,15 @@ function render() {
 function updateHUD() {
     document.getElementById('atlas-current-date').textContent = formatDate(state.currentTime);
     document.getElementById('stat-events').textContent = state.eventIdx.toLocaleString();
-    document.getElementById('stat-files').textContent = state.nodes.filter(n => !n.isRepo).length.toLocaleString();
+    const totalLoc = state.repos.reduce((s, r) => s + r.totalLoc, 0);
+    document.getElementById('stat-files').textContent = formatLoc(totalLoc) + ' loc';
     document.getElementById('stat-focus').textContent = state.focusRepo || '—';
+
+    // Per-repo LOC counters in the legend
+    state.repos.forEach(r => {
+        const el = document.querySelector(`[data-repo-loc="${r.name}"]`);
+        if (el) el.textContent = formatLoc(r.totalLoc);
+    });
 
     // Seek bar
     const seek = document.getElementById('seek');
@@ -495,7 +533,12 @@ function reset() {
     state.currentTime = state.data.start;
     state.nodes = [...state.repos];
     state.nodeIndex.clear();
-    state.repos.forEach(r => { r.flash = 0; });
+    state.repos.forEach(r => {
+        r.flash = 0;
+        r.totalLoc = 0;
+        r.r = REPO_RADIUS_BASE;
+        r.targetR = REPO_RADIUS_BASE;
+    });
     state.simulation.nodes(state.nodes);
     state.simulation.alpha(0.3).restart();
     // Park cursor + clear trail
@@ -574,6 +617,12 @@ function hexToRgba(hex, a) {
     const g = parseInt(h.slice(2, 4), 16);
     const b = parseInt(h.slice(4, 6), 16);
     return `rgba(${r},${g},${b},${a})`;
+}
+
+function formatLoc(n) {
+    if (n >= 1e6) return (n / 1e6).toFixed(1) + 'M';
+    if (n >= 1e3) return (n / 1e3).toFixed(1) + 'k';
+    return Math.round(n).toString();
 }
 
 function blend(c1, c2, t) {

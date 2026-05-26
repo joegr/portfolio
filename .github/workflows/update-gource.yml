@@ -7,8 +7,7 @@ on:
   push:
     paths:
       - 'gource/repos.txt'
-      - 'gource/build-log.sh'
-      - 'gource/log-to-json.py'
+      - 'gource/build-events.py'
       - '.github/workflows/update-gource.yml'
 
 jobs:
@@ -19,10 +18,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install gource
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y gource xvfb
+      # gource is no longer required; the new pipeline reads `git log --numstat`
+      # directly via `gource/build-events.py`. No system deps beyond git + python3.
 
       - name: Cache cloned repos
         uses: actions/cache@v4
@@ -65,19 +62,17 @@ jobs:
             fi
           done < gource/repos.txt
 
-      - name: Build gource.json
-        # xvfb-run guards against gource trying to open a display, even though
-        # --output-custom-log shouldn't need one.
-        run: xvfb-run -a bash gource/build-log.sh /tmp/repos
+      - name: Build / refresh atlas event stream
+        run: python3 gource/build-events.py /tmp/repos
 
       - name: Commit if changed
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add gource/gource.json
+          git add gource/gource.json gource/state.json
           if git diff --cached --quiet; then
             echo "No changes to commit."
           else
-            git commit -m "chore: update gource atlas data"
+            git commit -m "chore: refresh atlas events"
             git push
           fi
