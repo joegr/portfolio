@@ -28,10 +28,14 @@ const FILE_RADIUS_FLASH = 6;
 const FLASH_DECAY = 0.06;
 const REPO_RADIUS = 14;
 const CAMERA_EASE = 0.08;
-const CAMERA_ZOOM_FOCUS = 2.4;
 const CAMERA_ZOOM_OVERVIEW = 1;
 const REPO_ATTRACTION = 0.06;
 const NODE_DECAY_AFTER_DELETE = 0.04;
+
+// Cursor that flies between repos in chronological order.
+const CURSOR_EASE = 0.12;
+const CURSOR_TRAIL_MAX = 24;
+const CURSOR_TRAIL_SAMPLE_EVERY = 2;  // frames
 
 // ---------- State ----------
 const state = {
@@ -57,11 +61,19 @@ const state = {
     eventIdx: 0,
     lastFrame: 0,
 
-    // Camera (in world coords)
+    // Camera (in world coords) — static by default; user can zoom/reset.
     camera: { x: 0, y: 0, k: 1 },
     cameraTarget: { x: 0, y: 0, k: 1 },
-    overviewMode: false,
     focusRepo: null,
+
+    // Roaming cursor that flies repo-to-repo as events fire.
+    cursor: {
+        x: 0, y: 0,
+        targetX: 0, targetY: 0,
+        trail: [],
+        frame: 0,
+        active: false,
+    },
 };
 
 // ---------- Bootstrap ----------
@@ -97,6 +109,14 @@ async function init() {
     state.currentTime = state.data.start;
     state.cameraTarget = { x: 0, y: 0, k: CAMERA_ZOOM_OVERVIEW };
     state.camera = { ...state.cameraTarget };
+
+    // Park the cursor at the first repo's anchor so it has a starting pose.
+    if (state.repos.length > 0) {
+        const r0 = state.repos[0];
+        state.cursor.x = state.cursor.targetX = r0.x;
+        state.cursor.y = state.cursor.targetY = r0.y;
+    }
+
     updateHUD();
 
     // Render loop
@@ -209,13 +229,11 @@ function applyEvent(e) {
     repo.flash = Math.min(1, repo.flash + 0.4);
     repo.recentTouch = state.currentTime;
 
-    // Camera fly-to (unless user has explicitly enabled overview)
-    if (!state.overviewMode) {
-        state.focusRepo = e.r;
-        state.cameraTarget.x = repo.x;
-        state.cameraTarget.y = repo.y;
-        state.cameraTarget.k = CAMERA_ZOOM_FOCUS;
-    }
+    // Cursor flies to the active repo — camera stays where it is.
+    state.focusRepo = e.r;
+    state.cursor.targetX = repo.x;
+    state.cursor.targetY = repo.y;
+    state.cursor.active = true;
 }
 
 function addNode(e, repo) {
@@ -256,10 +274,20 @@ function frame(now) {
         advanceTime(dt);
     }
 
-    // Ease camera
+    // Ease camera (only moves when user zooms/resets)
     state.camera.x += (state.cameraTarget.x - state.camera.x) * CAMERA_EASE;
     state.camera.y += (state.cameraTarget.y - state.camera.y) * CAMERA_EASE;
     state.camera.k += (state.cameraTarget.k - state.camera.k) * CAMERA_EASE;
+
+    // Ease cursor toward active repo and shed a trail behind it.
+    const cur = state.cursor;
+    cur.x += (cur.targetX - cur.x) * CURSOR_EASE;
+    cur.y += (cur.targetY - cur.y) * CURSOR_EASE;
+    cur.frame++;
+    if (cur.active && cur.frame % CURSOR_TRAIL_SAMPLE_EVERY === 0) {
+        cur.trail.push({ x: cur.x, y: cur.y });
+        if (cur.trail.length > CURSOR_TRAIL_MAX) cur.trail.shift();
+    }
 
     // Decay flashes and dying nodes
     for (let i = state.nodes.length - 1; i >= 0; i--) {
@@ -339,6 +367,22 @@ function render() {
         ctx.globalAlpha = 1;
     });
 
+    // Roaming cursor trail (oldest = most faded)
+    const cur = state.cursor;
+    if (cur.active && cur.trail.length > 1) {
+        ctx.lineWidth = 1.5 / camera.k;
+        ctx.lineCap = 'round';
+        ctx.lineJoin = 'round';
+        for (let i = 1; i < cur.trail.length; i++) {
+            const a = i / cur.trail.length;
+            ctx.strokeStyle = hexToRgba('#c2410c', a * 0.55);
+            ctx.beginPath();
+            ctx.moveTo(cur.trail[i - 1].x, cur.trail[i - 1].y);
+            ctx.lineTo(cur.trail[i].x, cur.trail[i].y);
+            ctx.stroke();
+        }
+    }
+
     // Repo anchors + labels
     ctx.font = '600 12px "SF Mono", ui-monospace, Menlo, monospace';
     ctx.textAlign = 'center';
@@ -362,6 +406,20 @@ function render() {
         ctx.globalAlpha = 1;
     });
 
+    // The cursor itself — outer ring + inner dot, drawn last so it sits on top.
+    if (cur.active) {
+        const pulse = 1 + 0.15 * Math.sin(cur.frame * 0.12);
+        ctx.lineWidth = 2 / camera.k;
+        ctx.strokeStyle = '#c2410c';
+        ctx.beginPath();
+        ctx.arc(cur.x, cur.y, 14 * pulse, 0, Math.PI * 2);
+        ctx.stroke();
+        ctx.fillStyle = '#c2410c';
+        ctx.beginPath();
+        ctx.arc(cur.x, cur.y, 3.5, 0, Math.PI * 2);
+        ctx.fill();
+    }
+
     ctx.restore();
 }
 
@@ -370,7 +428,7 @@ function updateHUD() {
     document.getElementById('atlas-current-date').textContent = formatDate(state.currentTime);
     document.getElementById('stat-events').textContent = state.eventIdx.toLocaleString();
     document.getElementById('stat-files').textContent = state.nodes.filter(n => !n.isRepo).length.toLocaleString();
-    document.getElementById('stat-focus').textContent = state.overviewMode ? 'OVERVIEW' : (state.focusRepo || '—');
+    document.getElementById('stat-focus').textContent = state.focusRepo || '—';
 
     // Seek bar
     const seek = document.getElementById('seek');
@@ -407,7 +465,7 @@ function bindControls() {
         if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT') return;
         if (e.code === 'Space') { e.preventDefault(); togglePlay(); }
         if (e.key === 'r') reset();
-        if (e.key === 'o') toggleOverview();
+        if (e.key === 'o') toggleOverview();  // recenter view
     });
 
     // Wheel zoom on canvas
@@ -440,17 +498,20 @@ function reset() {
     state.repos.forEach(r => { r.flash = 0; });
     state.simulation.nodes(state.nodes);
     state.simulation.alpha(0.3).restart();
+    // Park cursor + clear trail
+    state.cursor.trail = [];
+    state.cursor.active = false;
+    if (state.repos.length > 0) {
+        state.cursor.x = state.cursor.targetX = state.repos[0].x;
+        state.cursor.y = state.cursor.targetY = state.repos[0].y;
+    }
+    state.focusRepo = null;
     updateHUD();
 }
 
 function toggleOverview() {
-    state.overviewMode = !state.overviewMode;
-    const btn = document.getElementById('btn-overview');
-    btn.classList.toggle('active', state.overviewMode);
-    if (state.overviewMode) {
-        state.cameraTarget = { x: 0, y: 0, k: CAMERA_ZOOM_OVERVIEW };
-        state.focusRepo = null;
-    }
+    // Re-centers the camera and resets zoom to overview.
+    state.cameraTarget = { x: 0, y: 0, k: CAMERA_ZOOM_OVERVIEW };
 }
 
 function seekToFraction(f) {
