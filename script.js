@@ -141,78 +141,89 @@ function sanitizeURL(url) {
 const portfolioData = {
     fullstack: [
         {
-            title: "Soccer World Model (futwm)",
-            description: "Stochastic world-model-based prediction of soccer events with formal event ontology, Flask dashboard, and validated interchange formats. Features Monte Carlo rollouts, beam search prediction, and full-match simulation.",
-            technologies: ["Python", "Flask", "Pydantic", "JavaScript", "Monte Carlo", "JSON Schema"],
-            github: "https://github.com/joegr/futwm",
-            detailPage: "projects/futwm.html"
+            title: "Scythe — debate card cutter",
+            description: "A card cutter that doubles as a span-labeling tool. Each team runs its own server; a bare git repo is the record, every edit is a commit by its author, and saves are compare-and-swap.",
+            technologies: ["TypeScript", "React", "Vite", "OpenAPI", "spaCy", "WebAuthn", "Gherkin"],
+            github: "https://github.com/joegr/scythe-web",
+            demo: "https://joegr.github.io/scythe-landing/",
+            detailPage: "projects/scythe.html"
         },
         {
-            title: "Fold — Circuit Card Encryption Generator",
-            description: "Interactive circuit card simulator with 3D visualization and encryption algorithm generation. Create custom logic elements, stack circuit layers, and export real Python encryption code based on circuit design.",
-            technologies: ["React", "Flask", "Three.js", "TypeScript", "Python", "AES"],
+            title: "game-state — tournaments run from git",
+            description: "A single-elimination tournament run entirely on GitHub: markdown files are the database, GitHub Actions the only backend, and nothing reaches the public record until the organizer confirms a stage change.",
+            technologies: ["JavaScript", "GitHub Actions", "GitHub Pages", "Markdown", "Gherkin"],
+            github: "https://github.com/joegr/game-state",
+            demo: "https://joegr.github.io/game-state/",
+            detailPage: "projects/game-state.html"
+        },
+        {
+            title: "Predixion — prediction markets",
+            description: "A Polymarket-style market with an LMSR market maker, vote or oracle resolution, and results minted into a hash-chained ledger with post-quantum signatures from a Rust service.",
+            technologies: ["TypeScript", "React", "Rust", "Python", "FastAPI", "LMSR", "Kyber/Dilithium", "Docker"],
+            github: "https://github.com/joegr/polymarket-app",
+            detailPage: "projects/predixion.html"
+        },
+        {
+            title: "Fold — circuit cards into ciphers",
+            description: "Stack 3D circuit cards of logic gates and export a Python encryption class derived from the layout, wrapped around AES-256. A post-quantum mode binds ML-KEM-768 keys to the circuit topology.",
+            technologies: ["React", "TypeScript", "Three.js", "Flask", "AES-256", "ML-KEM-768", "liboqs"],
             github: "https://github.com/joegr/fold",
             detailPage: "projects/fold.html"
-        },
-        {
-            title: "Owl — Email CRM",
-            description: "Email-based CRM system with contact management, template creation, bulk email sending, and analytics dashboard. Built with Django backend and BDD testing using Gherkin/Cucumber specifications.",
-            technologies: ["Python", "Django", "JavaScript", "HTML", "Gherkin/BDD", "SMTP"],
-            github: "https://github.com/joegr/owl",
-            detailPage: "projects/owl.html"
-        },
-        {
-            title: "POO — DAO Governance System",
-            description: "Enterprise-scale DAO governance with quadratic voting, multi-signature treasury, and polyglot persistence across PostgreSQL, MongoDB, Neo4j, InfluxDB, and Redis. Kubernetes-deployed with GraphQL + REST APIs.",
-            technologies: ["Django", "GraphQL", "Kubernetes", "Docker", "PostgreSQL", "Neo4j"],
-            github: "https://github.com/joegr/poo",
-            detailPage: "projects/poo.html"
         }
     ],
     datascience: [
         {
-            title: "Elo Garden — LLM from Scratch",
-            description: "Complete LLM training infrastructure with custom Transformer architecture, BPE tokenizer, and full training pipeline. Features TensorBoard monitoring, checkpointing, and configurable text generation with temperature/top-k/top-p sampling.",
-            technologies: ["Python", "PyTorch", "Transformers", "BPE Tokenizer", "TensorBoard", "AdamW"],
-            github: "https://github.com/joegr/elo-garden/tree/main/services",
-            detailPage: "projects/elo-garden.html"
+            title: "Isogloss — where is this accent from?",
+            description: "Record speech, get back the phones, the language, fourteen sociophonetic measurements and a probability distribution over the map. The field is interpolated with the heat kernel of a gravity/barrier graph, built in PostGIS.",
+            technologies: ["Python", "PostGIS", "Gaussian processes", "spaCy", "TypeScript", "Web Audio", "Docker"],
+            github: "https://github.com/joegr/isogloss",
+            demo: "https://joegr.github.io/isogloss/",
+            detailPage: "projects/isogloss.html"
         },
         {
-            title: "Phonemescape — IPA Analysis Library",
-            description: "Comprehensive phoneme analysis library with IPA vowel/consonant visualization, mouth shape similarity calculation, and network graph generation. Features articulatory feature analysis and word phoneme breakdown.",
-            technologies: ["Python", "Plotly", "NetworkX", "IPA", "Linguistics", "pip package"],
+            title: "Phonemescape — the IPA as a library",
+            description: "The full 2020 IPA chart, a real tokenizer for diacritics, ties and tones, 28 distinctive features in one space for vowels and consonants, natural-class queries, chart plots, and a Neo4j graph of samples.",
+            technologies: ["Python", "Phonology", "Neo4j", "Matplotlib", "pip package"],
             github: "https://github.com/joegr/ipaba",
             detailPage: "projects/phonemescape.html"
         },
         {
-            title: "Native Sparse Attention (NSA)",
-            description: "CUDA implementation of sparse attention with three-branch architecture: compressed token, selected token, and sliding window branches. Optimized kernels with shared memory utilization.",
-            technologies: ["CUDA", "C", "CMake", "Sparse Attention", "GPU Kernels"],
-            github: "https://github.com/joegr/native-sparse-attention",
-            detailPage: "projects/native-sparse-attention.html"
-        },
-        {
-            title: "Forge — MetalNeuralKit M4 Optimizer",
-            description: "Apple M4 Neural Engine optimization library for Metal-based neural networks. Custom compute kernels, half-precision Float16, MPSGraph integration, and Neural Engine acceleration with BDD testing.",
-            technologies: ["Swift", "Metal", "Neural Engine", "MPSGraph", "Float16", "Gherkin/BDD"],
-            github: "https://github.com/joegr/forge",
-            detailPage: "projects/forge.html"
+            title: "Schemaz — 30 annotation schemas",
+            description: "Label Studio labeling schemas as pure JSON: six ML annotation categories, five levels each, from the floor of the task to a production-shaped schema with quality gates. Each file carries its design notes and sample tasks.",
+            technologies: ["Label Studio", "JSON", "Python", "Data annotation"],
+            github: "https://github.com/joegr/schemaz",
+            detailPage: "projects/schemaz.html"
         }
     ],
     dataengineering: [
         {
-            title: "Span — Blockchain ML Pipeline",
-            description: "Multi-language blockchain + NLP application combining Python ML processing with Rust-based Solana smart contracts. Dockerized microservices with Flask API and concurrent request handling.",
-            technologies: ["Python", "Rust", "Solana", "Flask", "Docker", "NLP"],
-            github: "https://github.com/joegr/span",
-            detailPage: "projects/span.html"
+            title: "Soccer World Model",
+            description: "Stochastic, world-model-based prediction of soccer events with a formal event ontology and validated JSON/CSV interchange. Top-k next events, beam search, Monte Carlo rollouts and full-match simulation. On PyPI.",
+            technologies: ["Python", "Pydantic", "Markov models", "Monte Carlo", "Flask", "PyPI"],
+            github: "https://github.com/joegr/futwm",
+            detailPage: "projects/futwm.html"
         },
         {
-            title: "Vigenère Cipher",
-            description: "Cryptographic cipher implementation with random key generation from printable character sets. Demonstrates classical encryption algorithms with modern Python practices.",
-            technologies: ["Python", "Cryptography", "Classical Ciphers"],
-            github: "https://gist.github.com/joegr/37724d7a3c6bf1ad8d1ae5fff67ff7ee",
-            detailPage: "projects/vigenere-cipher.html"
+            title: "Elo Garden — ModelOps by tournament",
+            description: "Models enter arenas, play seasons and earn Elo ratings; experiments are tracked through an MLflow-compatible API. A React dashboard builds arenas and reads leaderboards.",
+            technologies: ["Python", "MLflow", "Elo", "React", "TypeScript", "Docker"],
+            github: "https://github.com/joegr/elo-garden",
+            detailPage: "projects/elo-garden.html"
+        },
+        {
+            title: "Forge — MetalNeuralKit for M4",
+            description: "Neural network layers for Apple silicon in Swift and Metal: Float16 paths, Neural Engine acceleration, MPSGraph compilation, persistent shared buffers and custom compute kernels, specified in Gherkin.",
+            technologies: ["Swift", "Metal", "MPSGraph", "Neural Engine", "Float16", "Gherkin"],
+            github: "https://github.com/joegr/forge",
+            detailPage: "projects/forge.html"
+        },
+        {
+            title: "15 Lines of Code",
+            description: "A daily sketch in fifteen lines of p5.js, one folder per day, built into a static gallery and posted to Instagram.",
+            technologies: ["p5.js", "JavaScript", "Generative art", "GitHub Pages"],
+            github: "https://github.com/joegr/15linesofcode",
+            demo: "https://joegr.github.io/15linesofcode/",
+            detailPage: "projects/15linesofcode.html"
         }
     ],
     writings: [
@@ -239,6 +250,9 @@ const portfolioData = {
 
 // ---------- Render ----------
 function createProjectCard(p) {
+    const demoLink = p.demo
+        ? `<a href="${sanitizeURL(p.demo)}" target="_blank" rel="noopener noreferrer" class="portfolio-link"><i class="fas fa-arrow-up-right-from-square"></i> Live</a>`
+        : '';
     const detailLink = p.detailPage
         ? `<a href="${sanitizeURL(p.detailPage)}" class="portfolio-link detail-link">Details &rarr;</a>`
         : '';
@@ -252,6 +266,7 @@ function createProjectCard(p) {
                 <a href="${sanitizeURL(p.github)}" target="_blank" rel="noopener noreferrer" class="portfolio-link">
                     <i class="fab fa-github"></i> Code
                 </a>
+                ${demoLink}
                 ${detailLink}
             </div>
         </article>

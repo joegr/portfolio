@@ -4,13 +4,16 @@
 # GOURCE_PAT secret in repo settings and uncomment the auth line in the
 # workflow (`.github/workflows/update-gource.yml`).
 
-joegr/futwm
+joegr/scythe-web
+joegr/scythe-landing
+joegr/game-state
+joegr/polymarket-app
 joegr/fold
-joegr/owl
-joegr/poo
-joegr/elo-garden
+joegr/isogloss
 joegr/ipaba
-joegr/native-sparse-attention
+joegr/schemaz
+joegr/futwm
+joegr/elo-garden
 joegr/forge
-joegr/span
+joegr/15linesofcode
 joegr/blogg

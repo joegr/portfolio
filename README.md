@@ -4,7 +4,8 @@ Joe's Portfolio site
 
 ## 🚀 Features
 
-- **Three Portfolio Sections**: Full Stack, Data Science, and Data Engineering
+- **Three Portfolio Sections**: Apps, Language & Speech, and Models & Experiments
+- **Project pages**: `projects/<slug>.html` is a copy of `projects/template.html`; the content comes from `projects/project-detail.js`, keyed by the slug. The cards on the home page come from `portfolioData` in `script.js`.
 - **Responsive Design**: Works perfectly on desktop, tablet, and mobile devices
 - **Modern UI/UX**: Clean design with smooth animations and transitions
 - **Interactive Elements**: Hover effects, scroll animations, and dynamic content
